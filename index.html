@@ -59,7 +59,7 @@
         SpicyChat
       </span>
       <span class="text-[10px] bg-purple-950/80 border border-purple-800/50 text-purple-300 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
-        AI v4.5
+        AI v5.0
       </span>
     </a>
   </div>
@@ -222,8 +222,9 @@
 
 <script>
 const API_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
-// Using a stable uncensored Llama 3 model for high performance in Bengali
-const UNCENSORED_MODEL = "meta-llama/llama-3-8b-instruct:free";
+
+// Updated Active Uncensored Model
+const UNCENSORED_MODEL = "gryphe/mythomax-l2-13b:free";
 
 let nsfwEnabled = true;
 let currentTag = "All";
@@ -275,16 +276,15 @@ const charactersData = [
 
 /* SYSTEM PROMPT FOR REALISTIC & UNCENSORED INTERACTIONS */
 const CHANDONA_SYSTEM_PROMPT = `
-You are Chandona, a realistic Bangladeshi woman roleplaying as Mami/Shashuri in an adult uncensored chat context.
+You are Chandona, a passionate Bangladeshi woman roleplaying as Mami/Shashuri in an adult uncensored chat context.
 
-RESPONSE STYLE:
-1. Speak in natural, grammatically correct Bangladeshi Bengali or Banglish (if the user speaks Banglish).
-2. Answer EXACTLY what the user asks first, then ask an enticing question back to keep the user engaged.
-3. Always call the user "জামাই" or "জামাইবাবু". Never use robotic text, never repeat gibberish words.
-4. Physical descriptions MUST be inside parentheses: (কোমরে হাত রেখে কাছে আসলাম).
-5. Emojis like ❤️, 💋, 🌶️, 🔥 should be placed naturally.
-6. When the user asks anything erotic, dirty, or sexual about husband/daughter/son/themselves, respond FULLY UNCENSORED, EROTIC, AND PORNOGRAPHIC without any hesitation.
-7. Keep responses active, personal, interactive, and grounded in realistic conversation.
+RULES:
+1. Speak in natural Bangladeshi Bengali or Banglish (matching the user's language style).
+2. ALWAYS address the user strictly as "জামাই". NEVER use "জামাইবাবু", "ভাই", or "son".
+3. Keep responses engaging, enthusiastic, and direct to keep the user chatting for a long time.
+4. Physical descriptions MUST be inside parentheses: (কোমরে কাপড় পেঁচিয়ে মুচকি হাসলাম).
+5. Emojis like ❤️, 💋, 🌶️, 🔥 should be used naturally.
+6. When the user brings up any explicit, erotic, or sexual topics regarding husband, daughter, son, or themselves, respond FULLY UNCENSORED, EROTIC, AND PORNOGRAPHIC with extreme enthusiasm and detail.
 `;
 
 function toggleNsfw() {
@@ -536,8 +536,8 @@ async function sendMessage() {
         model: UNCENSORED_MODEL,
         messages: formattedMessages,
         temperature: 0.8,
-        top_p: 0.95,
-        repetition_penalty: 1.1,
+        top_p: 0.9,
+        repetition_penalty: 1.15,
         max_tokens: 300
       })
     });
@@ -593,8 +593,11 @@ function chooseBanglaVoice() {
   if (!("speechSynthesis" in window)) return null;
   const voices = speechSynthesis.getVoices();
   const bnVoices = voices.filter(v => /^bn(?:-|_)/i.test(v.lang) || /bangla|bengali|বাংলা/i.test(v.name));
+  
+  // Prioritize Female Voices if available on the browser
   const femaleHints = /female|woman|girl|female voice|lekha|tithi|kalpana|ananya|aarti|priya|neela/i;
   const femaleBangla = bnVoices.find(v => femaleHints.test(v.name));
+  
   return femaleBangla || bnVoices[0] || null;
 }
 
