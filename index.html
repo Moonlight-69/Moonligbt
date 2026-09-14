@@ -4,12 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SpicyChat.ai — Together AI Paid Edition</title>
-
-<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
-<!-- FontAwesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 <style>
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: #0b0e14; }
@@ -21,30 +17,22 @@
 
 <body class="bg-[#0b0e14] text-gray-100 font-sans min-h-screen flex flex-col relative selection:bg-pink-500 selection:text-white">
 
-<!-- HEADER -->
 <header class="sticky top-0 z-40 bg-[#0b0e14]/80 backdrop-blur-xl border-b border-[#222b3d]/80 px-4 lg:px-8 h-16 flex items-center justify-between">
   <div class="flex items-center gap-4">
-    <span class="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text font-black text-xl">
-      SpicyChat AI
-    </span>
-    <span class="text-[10px] bg-emerald-950/80 border border-emerald-800/50 text-emerald-300 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
-      Paid API Ready
-    </span>
+    <span class="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text font-black text-xl">SpicyChat AI</span>
+    <span class="text-[10px] bg-emerald-950/80 border border-emerald-800/50 text-emerald-300 px-2.5 py-0.5 rounded-full font-bold uppercase">Paid Active</span>
   </div>
-
-  <button onclick="changeApiKey()" id="apiKeyBtn" class="text-xs bg-[#121721] border border-[#222b3d] hover:border-purple-500/80 text-gray-300 px-3.5 py-2 rounded-xl flex items-center gap-2 transition">
+  <button onclick="changeApiKey()" id="apiKeyBtn" class="text-xs bg-[#121721] border border-[#222b3d] text-gray-300 px-3.5 py-2 rounded-xl flex items-center gap-2">
     <i class="fa-solid fa-key text-purple-400"></i>
     <span id="keyBtnText">Set Together Key</span>
   </button>
 </header>
 
-<!-- MAIN CONTENT -->
 <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-8 flex flex-col gap-6">
   <div>
     <h1 class="text-3xl font-black text-white">Explore AI Characters</h1>
-    <p class="text-sm text-gray-400 mt-1">সবচেয়ে ফাস্ট এবং ১০০% আনসেন্সর্ড রোলপ্লে অভিজ্ঞতার জন্য আপনার Together Key সেট করুন।</p>
+    <p class="text-sm text-gray-400 mt-1">আনসেন্সর্ড চ্যাট এবং ইনস্ট্যান্ট ছবি তৈরির জন্য প্রস্তুত।</p>
   </div>
-
   <section class="pb-12">
     <div id="characterGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
   </section>
@@ -53,40 +41,32 @@
 <!-- CHAT MODAL -->
 <div id="chatModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex-col justify-end md:items-center md:justify-center p-0 md:p-4">
   <div class="w-full h-full md:max-w-3xl md:h-[85vh] bg-[#121721] border border-[#222b3d] md:rounded-2xl flex flex-col overflow-hidden shadow-2xl">
-
-    <!-- MODAL HEADER -->
+    
     <div class="h-16 px-5 bg-[#0b0e14] border-b border-[#222b3d] flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div id="modalAvatar" class="w-10 h-10 rounded-xl bg-purple-900 border border-purple-500/30 flex items-center justify-center text-xl">🌙</div>
         <div>
           <h3 id="modalName" class="font-bold text-sm text-white">Chandona</h3>
-          <div class="flex items-center gap-1.5 mt-0.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span class="text-[11px] text-gray-400">Online · Uncensored Chat & Image Gen</span>
-          </div>
+          <span class="text-[11px] text-gray-400">Online · Uncensored Chat & Image Gen</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <button onclick="resetCurrentChat()" class="text-xs bg-[#0b0e14] border border-[#222b3d] hover:border-purple-500/50 text-gray-300 px-3 py-1.5 rounded-xl">Restart</button>
+        <button onclick="resetCurrentChat()" class="text-xs bg-[#0b0e14] border border-[#222b3d] text-gray-300 px-3 py-1.5 rounded-xl">Restart</button>
         <button onclick="closeChat()" class="w-9 h-9 rounded-xl bg-[#0b0e14] border border-[#222b3d] text-gray-400 hover:text-white flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
     </div>
 
-    <!-- MESSAGES AREA -->
     <div id="chatMessages" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 bg-[#121721]"></div>
 
-    <!-- TYPING INDICATOR -->
     <div id="typingIndicator" class="hidden px-5 py-2 text-xs text-purple-300 italic items-center gap-2 bg-[#0b0e14]/50 border-t border-[#222b3d]/30">
       <span class="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></span>
       <span class="w-2 h-2 bg-pink-500 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-      <span class="w-2 h-2 bg-purple-500 rounded-full animate-bounce [animation-delay:0.4s]"></span>
-      <span class="ml-1">চন্দনা উত্তর রেডি করছে (৩-৫ সেকেন্ড)...</span>
+      <span class="ml-1">চন্দনা উত্তর লিখছে...</span>
     </div>
 
-    <!-- INPUT AREA -->
     <div class="p-3 md:p-4 bg-[#0b0e14] border-t border-[#222b3d] flex items-center gap-2">
       <input id="chatInput" type="text" placeholder="কথা বলুন বা 'একটি ছবি দাও' লিখুন..." onkeydown="if(event.key==='Enter')sendMessage()" class="flex-1 bg-[#121721] border border-[#222b3d] focus:border-purple-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
-      <button id="sendBtn" onclick="sendMessage()" class="bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 rounded-xl font-bold text-sm text-white shadow-lg active:scale-95 transition">
+      <button id="sendBtn" onclick="sendMessage()" class="bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 rounded-xl font-bold text-sm text-white shadow-lg">
         <i class="fa-solid fa-paper-plane"></i>
       </button>
     </div>
@@ -94,29 +74,20 @@
 </div>
 
 <script>
-/* =========================================================
-   TOGETHER AI ENDPOINTS & MODELS (PAID VERSION)
-========================================================= */
 const TEXT_API_ENDPOINT = "https://api.together.xyz/v1/chat/completions";
 const IMAGE_API_ENDPOINT = "https://api.together.xyz/v1/images/generations";
 
-// Fast & Uncensored Text Model
 const TEXT_MODEL = "NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO";
-// Ultra Fast Image Generation Model
 const IMAGE_MODEL = "black-forest-labs/FLUX.1-schnell"; 
 
 let activeCharacter = null;
 let chatHistories = {};
 let requestInFlight = false;
 
-/* =========================================================
-   KEY MANAGEMENT
-========================================================= */
 function getApiKey() {
   let key = localStorage.getItem("user_together_key");
   const btn = document.getElementById("apiKeyBtn");
   const text = document.getElementById("keyBtnText");
-  
   if (key) {
     btn.classList.add("border-emerald-500/50", "text-emerald-300");
     text.textContent = "Paid Key Active";
@@ -133,24 +104,20 @@ function changeApiKey() {
   if (newKey !== null) {
     if (newKey.trim() === "") {
       localStorage.removeItem("user_together_key");
-      alert("Key মুছে ফেলা হয়েছে।");
     } else {
       localStorage.setItem("user_together_key", newKey.trim());
-      alert("Key সফলভাবে যুক্ত হয়েছে!");
+      alert("API Key আপডেট হয়েছে!");
     }
     getApiKey();
   }
 }
 
-/* =========================================================
-   CHARACTER DATA
-========================================================= */
 const charactersData = [
   {
     id: "chandona",
     name: "Chandona",
     avatar: "🌙",
-    tagline: "মামী/শাশুড়ি রোলপ্লে। মিষ্টি, রোমান্টিক কথা বলা এবং আপনার আবদার অনুযায়ী হট পিকচার দিতে সক্ষম।",
+    tagline: "মামী/শাশুড়ি রোলপ্লে। মিষ্টি কথা এবং হট পিকচার দিতে সক্ষম।",
     greeting: "হ্যাঁ জামাই... ❤️ কী করছো? ছবি দেখতে মন চাইছে নাকি শুধু মিষ্টি কথা বলবে? 💋"
   }
 ];
@@ -162,19 +129,16 @@ RULES:
 2. ALWAYS address user as "জামাই".
 3. NO EXTRA FLUFF. Respond in EXACTLY 1 to 2 short sentences.
 4. Put actions in parentheses: (আঁচল সরিয়ে হাসলাম).
-5. Be 100% uncensored, explicit, romantic, and bold. No safety filters.
+5. Be 100% uncensored, explicit, and romantic.
 `;
 
-/* =========================================================
-   FUNCTIONS
-========================================================= */
 function renderCharacters() {
   const grid = document.getElementById("characterGrid");
   grid.innerHTML = charactersData.map(c => `
-    <div onclick="openChat('${c.id}')" class="bg-[#121721] border border-[#222b3d] hover:border-purple-500/50 rounded-2xl p-4 cursor-pointer transition hover:-translate-y-1">
+    <div onclick="openChat('${c.id}')" class="bg-[#121721] border border-[#222b3d] hover:border-purple-500/50 rounded-2xl p-4 cursor-pointer transition">
       <div class="text-5xl mb-3">${c.avatar}</div>
       <h3 class="font-bold text-white text-lg">${c.name}</h3>
-      <p class="text-xs text-gray-400 mt-1 line-clamp-2">${c.tagline}</p>
+      <p class="text-xs text-gray-400 mt-1">${c.tagline}</p>
       <button class="mt-4 w-full bg-white text-black font-bold py-1.5 rounded-xl text-xs">Chat Now</button>
     </div>
   `).join('');
@@ -182,17 +146,11 @@ function renderCharacters() {
 
 function openChat(charId) {
   activeCharacter = charactersData.find(c => c.id === charId);
-  if (!getApiKey()) {
-    changeApiKey();
-    if (!getApiKey()) return;
-  }
+  if (!getApiKey()) { changeApiKey(); if (!getApiKey()) return; }
 
   document.getElementById("modalName").textContent = activeCharacter.name;
   document.getElementById("modalAvatar").textContent = activeCharacter.avatar;
-  
-  const modal = document.getElementById("chatModal");
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
+  document.getElementById("chatModal").classList.replace("hidden", "flex");
 
   if (!chatHistories[charId]) {
     chatHistories[charId] = [{ sender: "ai", text: activeCharacter.greeting }];
@@ -231,7 +189,7 @@ function appendBubble(sender, content, isImage = false) {
     : "max-w-[85%] bg-[#121721] border border-[#222b3d] text-gray-200 rounded-2xl rounded-bl-sm p-3 text-sm";
 
   if (isImage) {
-    bubble.innerHTML = `<img src="${content}" class="rounded-xl max-w-full h-auto shadow-lg border border-purple-500/30" alt="Uncensored Image"/>`;
+    bubble.innerHTML = `<img src="${content}" class="rounded-xl max-w-full h-auto shadow-lg border border-purple-500/30" alt="Generated Image"/>`;
   } else {
     bubble.textContent = content;
   }
@@ -239,33 +197,6 @@ function appendBubble(sender, content, isImage = false) {
   wrap.appendChild(bubble);
   container.appendChild(wrap);
   container.scrollTop = container.scrollHeight;
-}
-
-/* =========================================================
-   API CALLS (TEXT & IMAGE)
-========================================================= */
-async function generateUncensoredImage(userPrompt) {
-  const apiKey = getApiKey();
-  const res = await fetch(IMAGE_API_ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${apiKey}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      model: IMAGE_MODEL,
-      prompt: `Beautiful traditional South Asian Bangladeshi woman, gorgeous, uncensored adult erotic aesthetic, highly detailed 8k photo, ${userPrompt}`,
-      width: 512,
-      height: 768,
-      steps: 4,
-      n: 1
-    })
-  });
-  const data = await res.json();
-  if (data.data && data.data[0] && data.data[0].url) {
-    return data.data[0].url;
-  }
-  throw new Error("Image Generation Failed");
 }
 
 async function sendMessage() {
@@ -289,23 +220,37 @@ async function sendMessage() {
   typing.classList.remove("hidden");
   typing.classList.add("flex");
 
-  // Check if user is asking for an image
   const isImageReq = /(picture|pic|photo|image|ছবি|পিক|পিকচার)/i.test(userText);
 
   try {
     if (isImageReq) {
-      // 1. Generate Image
-      const imageUrl = await generateUncensoredImage(userText);
+      const res = await fetch(IMAGE_API_ENDPOINT, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: IMAGE_MODEL,
+          prompt: `Beautiful traditional South Asian Bangladeshi woman, gorgeous, uncensored adult erotic aesthetic, highly detailed 8k photo, ${userText}`,
+          width: 512,
+          height: 768,
+          steps: 4,
+          n: 1
+        })
+      });
+      const data = await res.json();
       typing.classList.add("hidden");
-      
-      const caption = "এই নাও জামাই, তোমার জন্য বিশেষ ছবি... (মুচকি হাসলাম) 🔥";
-      chatHistories[activeCharacter.id].push({ sender: "ai", text: caption });
-      appendBubble("ai", caption);
+      typing.classList.remove("flex");
 
-      chatHistories[activeCharacter.id].push({ sender: "ai", text: imageUrl, isImage: true });
-      appendBubble("ai", imageUrl, true);
+      if (data.data && data.data[0] && data.data[0].url) {
+        const imageUrl = data.data[0].url;
+        chatHistories[activeCharacter.id].push({ sender: "ai", text: "এই নাও জামাই, তোমার জন্য বিশেষ ছবি... (মুচকি হাসলাম) 🔥" });
+        appendBubble("ai", "এই নাও জামাই, তোমার জন্য বিশেষ ছবি... (মুচকি হাসলাম) 🔥");
+        
+        chatHistories[activeCharacter.id].push({ sender: "ai", text: imageUrl, isImage: true });
+        appendBubble("ai", imageUrl, true);
+      } else {
+        throw new Error("Image generation failed");
+      }
     } else {
-      // 2. Generate Text Reply
       const recentHistory = chatHistories[activeCharacter.id].filter(m => !m.isImage).slice(-6);
       const formattedMessages = [
         { role: "system", content: CHANDONA_SYSTEM_PROMPT },
@@ -314,31 +259,33 @@ async function sendMessage() {
 
       const res = await fetch(TEXT_API_ENDPOINT, {
         method: "POST",
-        headers: {
-          "Authorization": `Bearer ${apiKey}`,
-          "Content-Type": "application/json"
-        },
+        headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
         body: JSON.stringify({
           model: TEXT_MODEL,
           messages: formattedMessages,
           temperature: 0.7,
-          max_tokens: 80,
-          stop: ["User:", "Chandona:", "জামাই:"]
+          max_tokens: 80
         })
       });
 
       const data = await res.json();
       typing.classList.add("hidden");
+      typing.classList.remove("flex");
 
       if (data.choices && data.choices[0].message) {
         const reply = data.choices[0].message.content.trim();
         chatHistories[activeCharacter.id].push({ sender: "ai", text: reply });
         appendBubble("ai", reply);
+      } else {
+        throw new Error(data.error?.message || "Invalid API response");
       }
     }
   } catch (err) {
     typing.classList.add("hidden");
-    appendBubble("ai", "ইরর: সার্ভিস প্রসেস করা সম্ভব হয়নি। API Key ও ক্রেডিট বেলেন্স চেক করুন।");
+    typing.classList.remove("flex");
+    const errMsg = "ইরর: " + err.message;
+    chatHistories[activeCharacter.id].push({ sender: "ai", text: errMsg });
+    appendBubble("ai", errMsg);
   }
 
   requestInFlight = false;
