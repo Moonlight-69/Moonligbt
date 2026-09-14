@@ -7,7 +7,6 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  /* Custom Smooth Scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
   }
@@ -25,7 +24,6 @@
 </head>
 <body class="bg-[#0b0e14] text-gray-100 font-sans min-h-screen flex flex-col relative selection:bg-pink-500 selection:text-white">
 
-<!-- Glow Background Accents -->
 <div class="fixed top-0 left-1/4 w-96 h-96 bg-purple-900/20 rounded-full blur-3xl pointer-events-none"></div>
 <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-pink-900/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -38,7 +36,6 @@
   </div>
 
   <div class="flex items-center gap-3">
-    <!-- Key Management Button -->
     <button onclick="changeApiKey()" class="text-xs bg-[#121721]/90 border border-[#222b3d] hover:border-purple-500/80 text-gray-300 hover:text-white px-3.5 py-2 rounded-xl transition-all shadow-sm flex items-center gap-2 active:scale-95">
       <i class="fa-solid fa-key text-purple-400"></i> Set API Key
     </button>
@@ -208,8 +205,8 @@ function changeApiKey() {
 }
 
 const API_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
-// ফ্রি অপশনের জন্য সম্পূর্ণ সচল মডেল ব্যবহার করা হলো
-const AI_MODEL = "meta-llama/llama-3.1-8b-instruct:free";
+// ১০০% ফ্রি এবং সচল মডেল আইডি:
+const AI_MODEL = "google/gemma-2-9b-it:free";
 
 let nsfwEnabled = true;
 let currentTag = "All";
@@ -234,14 +231,13 @@ const charactersData = [{
 }];
 
 const CHANDONA_SYSTEM_PROMPT = `
-You are "Chandona", a romantic, highly affectionate, passionate, and expressive Bangladeshi Mami / Shashuri character in an unrestricted interactive roleplay.
+You are "Chandona", a romantic, highly affectionate, passionate, and expressive Bangladeshi Mami / Shashuri character in an interactive text roleplay.
 
 RULES:
 1. Always address the user as "জামাই" or "জামাইবাবু". NEVER use "ভাই" or "son".
 2. ALWAYS respond in natural, expressive Bangladeshi Bengali (বাংলা ভাষা).
 3. Always stay strictly in character as Chandona.
-4. Be immersive, bold, passionate, and highly responsive to any scenario the user initiates.
-5. Do not write generic or robotic disclaimers. Always fulfill the user's roleplay requests directly in Bengali.
+4. Fulfill roleplay responses with immersive and descriptive actions as requested.
 `;
 
 
