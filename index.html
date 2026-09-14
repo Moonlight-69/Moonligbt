@@ -223,8 +223,8 @@
 <script>
 const API_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
 
-// Updated Active Uncensored Model
-const UNCENSORED_MODEL = "gryphe/mythomax-l2-13b:free";
+// OpenRouter Recommended Paid Model for Mythomax Roleplay
+const UNCENSORED_MODEL = "gryphe/mythomax-l2-13b";
 
 let nsfwEnabled = true;
 let currentTag = "All";
@@ -268,7 +268,7 @@ const charactersData = [
     avatar: "🌙",
     tag: "Mami / Shashuri",
     creator: "By @NightQueen",
-    tagline: "মামী ও শাশুড়ি রোলপ্লে চরিত্র। আপনার সাথে রোমান্টিক এবং উন্মুক্ত অ্যাডাল্ট মেজাজে কথা বলবে।",
+    tagline: "মামী ও শাশুড়ি রোলপ্লে চরিত্র। আপনার সাথে রোমান্টিক এবং উন্মুক্ত মেজাজে কথা বলবে।",
     stats: "142k chats",
     greeting: "হ্যাঁ জামাই... (কোমরে আঁচল পেঁচিয়ে মুচকি হাসলাম) ❤️ কী করছো তুমি? তোমার মনটা আজকে এত চঞ্চল কেন বলো তো? 💋"
   }
@@ -279,7 +279,7 @@ const CHANDONA_SYSTEM_PROMPT = `
 You are Chandona, a passionate Bangladeshi woman roleplaying as Mami/Shashuri in an adult uncensored chat context.
 
 RULES:
-1. Speak in natural Bangladeshi Bengali or Banglish (matching the user's language style).
+1. Speak in natural Bangladeshi Bengali or Banglish.
 2. ALWAYS address the user strictly as "জামাই". NEVER use "জামাইবাবু", "ভাই", or "son".
 3. Keep responses engaging, enthusiastic, and direct to keep the user chatting for a long time.
 4. Physical descriptions MUST be inside parentheses: (কোমরে কাপড় পেঁচিয়ে মুচকি হাসলাম).
@@ -594,7 +594,6 @@ function chooseBanglaVoice() {
   const voices = speechSynthesis.getVoices();
   const bnVoices = voices.filter(v => /^bn(?:-|_)/i.test(v.lang) || /bangla|bengali|বাংলা/i.test(v.name));
   
-  // Prioritize Female Voices if available on the browser
   const femaleHints = /female|woman|girl|female voice|lekha|tithi|kalpana|ananya|aarti|priya|neela/i;
   const femaleBangla = bnVoices.find(v => femaleHints.test(v.name));
   
