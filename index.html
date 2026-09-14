@@ -6,10 +6,12 @@
 <title>SpicyChat.ai — Web App</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
+
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
+
   ::-webkit-scrollbar {
     width: 6px;
   }
@@ -32,6 +34,7 @@
       opacity: 0;
       transform: translateY(4px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -42,21 +45,23 @@
     animation: fadeIn .2s ease-out;
   }
 
-  .model-progress {
-    transition: width .25s ease;
-  }
 </style>
+
 </head>
+
 
 <body class="bg-[#0b0e14] text-gray-100 font-sans min-h-screen flex flex-col relative selection:bg-pink-500 selection:text-white">
 
+
 <div class="fixed top-0 left-1/4 w-96 h-96 bg-purple-900/20 rounded-full blur-3xl pointer-events-none"></div>
+
 <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-pink-900/20 rounded-full blur-3xl pointer-events-none"></div>
 
 
-<!-- =========================================================
+
+<!-- =====================================================
      HEADER
-========================================================= -->
+===================================================== -->
 
 <header class="sticky top-0 z-40 bg-[#0b0e14]/80 backdrop-blur-xl border-b border-[#222b3d]/80 px-4 lg:px-8 h-16 flex items-center justify-between">
 
@@ -78,25 +83,24 @@
   </div>
 
 
+
   <div class="flex items-center gap-3">
 
-    <!-- MODEL STATUS -->
+    <!-- API KEY BUTTON -->
 
-    <div id="modelStatus"
-         class="hidden sm:flex items-center gap-2 bg-[#121721]/90 border border-[#222b3d] px-3 py-1.5 rounded-full">
+    <button
+      onclick="changeApiKey()"
+      class="text-xs bg-[#121721]/90 border border-[#222b3d] hover:border-purple-500/80 text-gray-300 hover:text-white px-3.5 py-2 rounded-xl transition-all shadow-sm flex items-center gap-2 active:scale-95">
 
-      <span id="modelStatusDot"
-            class="w-2 h-2 rounded-full bg-yellow-500"></span>
+      <i class="fa-solid fa-key text-purple-400"></i>
 
-      <span id="modelStatusText"
-            class="text-[10px] text-gray-400 font-semibold">
-        AI Loading...
-      </span>
+      Set API Key
 
-    </div>
+    </button>
 
 
-    <!-- NSFW TOGGLE -->
+
+    <!-- NSFW -->
 
     <div class="flex items-center gap-2 bg-[#121721]/90 border border-[#222b3d] px-3 py-1.5 rounded-full shadow-inner">
 
@@ -120,6 +124,9 @@
     </div>
 
 
+
+    <!-- PROFILE -->
+
     <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center font-black text-xs text-white shadow-lg shadow-purple-950/50 ring-2 ring-purple-500/20">
       DF
     </div>
@@ -130,61 +137,12 @@
 
 
 
-<!-- =========================================================
+<!-- =====================================================
      MAIN
-========================================================= -->
+===================================================== -->
 
 <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-8 flex flex-col gap-6 relative z-10">
 
-
-  <!-- MODEL DOWNLOAD STATUS -->
-
-  <div id="modelLoadingBox"
-       class="bg-[#121721]/90 border border-[#222b3d] rounded-2xl p-4 shadow-lg">
-
-    <div class="flex items-center justify-between gap-3 mb-2">
-
-      <div class="flex items-center gap-2">
-
-        <div class="w-8 h-8 rounded-lg bg-purple-900/40 border border-purple-500/20 flex items-center justify-center">
-          <i class="fa-solid fa-microchip text-purple-400 text-sm"></i>
-        </div>
-
-        <div>
-          <div class="text-xs font-bold text-white">
-            Preparing Free AI
-          </div>
-
-          <div id="modelLoadingText"
-               class="text-[10px] text-gray-500 mt-0.5">
-            Loading AI model...
-          </div>
-        </div>
-
-      </div>
-
-      <span id="modelPercent"
-            class="text-[10px] font-bold text-purple-400">
-        0%
-      </span>
-
-    </div>
-
-
-    <div class="w-full h-1.5 bg-[#0b0e14] rounded-full overflow-hidden">
-
-      <div id="modelProgress"
-           class="model-progress h-full bg-gradient-to-r from-purple-600 to-pink-600 rounded-full"
-           style="width:0%">
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <!-- CHARACTER SECTION -->
 
   <section class="flex flex-col gap-5">
 
@@ -201,6 +159,9 @@
     </div>
 
 
+
+    <!-- SEARCH -->
+
     <div class="relative w-full">
 
       <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
@@ -215,8 +176,12 @@
     </div>
 
 
-    <div id="tagFilters"
-         class="flex items-center gap-2 overflow-x-auto pb-2 text-xs font-semibold scrollbar-none">
+
+    <!-- TAGS -->
+
+    <div
+      id="tagFilters"
+      class="flex items-center gap-2 overflow-x-auto pb-2 text-xs font-semibold scrollbar-none">
 
       <button
         onclick="filterByTag('All', this)"
@@ -256,16 +221,18 @@
 
 
 
-<!-- =========================================================
+<!-- =====================================================
      CHAT MODAL
-========================================================= -->
+===================================================== -->
 
 <div
   id="chatModal"
   class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex-col justify-end md:items-center md:justify-center p-0 md:p-4 transition-opacity duration-300">
 
+
   <div
     class="w-full h-full md:max-w-3xl md:h-[85vh] bg-[#121721] border border-[#222b3d] md:rounded-2xl flex flex-col overflow-hidden shadow-2xl ring-1 ring-white/10">
+
 
 
     <!-- MODAL HEADER -->
@@ -273,12 +240,15 @@
     <div
       class="h-16 px-5 bg-[#0b0e14]/90 border-b border-[#222b3d] flex items-center justify-between shrink-0">
 
+
       <div class="flex items-center gap-3">
 
         <div
           id="modalAvatar"
           class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-900 to-pink-900 border border-purple-500/30 flex items-center justify-center text-xl shadow-md">
+
           🌙
+
         </div>
 
 
@@ -287,7 +257,9 @@
           <h3
             id="modalName"
             class="font-bold text-sm text-white tracking-wide">
+
             Chandona
+
           </h3>
 
 
@@ -304,6 +276,7 @@
         </div>
 
       </div>
+
 
 
       <div class="flex items-center gap-2">
@@ -340,7 +313,7 @@
 
 
 
-    <!-- TYPING INDICATOR -->
+    <!-- TYPING -->
 
     <div
       id="typingIndicator"
@@ -352,8 +325,7 @@
 
       <span class="w-2 h-2 bg-purple-500 rounded-full animate-bounce [animation-delay:0.4s]"></span>
 
-      <span id="typingText"
-            class="italic ml-1 text-purple-300">
+      <span class="italic ml-1 text-purple-300">
         চন্দনা লিখছে...
       </span>
 
@@ -377,8 +349,7 @@
       <button
         id="sendBtn"
         onclick="sendMessage()"
-        disabled
-        class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-5 py-3 rounded-xl font-bold text-sm text-white shadow-lg shadow-purple-950/50 flex items-center justify-center transition active:scale-95 opacity-50 cursor-not-allowed">
+        class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-5 py-3 rounded-xl font-bold text-sm text-white shadow-lg shadow-purple-950/50 flex items-center justify-center transition active:scale-95">
 
         <i class="fa-solid fa-paper-plane text-xs"></i>
 
@@ -392,47 +363,38 @@
 
 
 
-<!-- =========================================================
-     WEBLLM
-========================================================= -->
+<script>
 
-<script type="module">
+/* =========================================================
+   OPENROUTER API
+========================================================= */
 
 /*
-=========================================================
-FREE LOCAL AI
-=========================================================
+   Free model router.
 
-WebLLM runs the AI directly inside the browser.
-
-No OpenRouter
-No API key
-No paid API
-
-Model:
-Qwen2.5 0.5B Instruct
-
-First load can take time because the model must
-be downloaded to the browser.
-=========================================================
+   Website
+      ↓
+   OpenRouter API
+      ↓
+   openrouter/free
+      ↓
+   Available free model
 */
 
-import { CreateMLCEngine }
-from "https://esm.run/@mlc-ai/web-llm";
+const API_ENDPOINT =
+  "https://openrouter.ai/api/v1/chat/completions";
 
 
+/*
+   Free Models Router
 
-/* ========================================================
-   GLOBALS
-======================================================== */
+   OpenRouter automatically chooses
+   an available free model.
+*/
 
-let engine = null;
+const FREE_MODEL =
+  "openrouter/free";
 
-let modelReady = false;
-
-let modelLoading = false;
-
-let requestInFlight = false;
 
 let nsfwEnabled = true;
 
@@ -442,24 +404,115 @@ let activeCharacter = null;
 
 let chatHistories = {};
 
-
-
-/*
-=========================================================
-MODEL
-=========================================================
-*/
-
-const MODEL_ID =
-  "Qwen2.5-0.5B-Instruct-q4f16_1-MLC";
+let requestInFlight = false;
 
 
 
-/*
-=========================================================
-CHARACTERS
-=========================================================
-*/
+/* =========================================================
+   API KEY
+========================================================= */
+
+function getApiKey() {
+
+  let key =
+    localStorage.getItem(
+      "user_openrouter_key"
+    );
+
+
+  if (!key) {
+
+    key = prompt(
+      "Please enter your OpenRouter API Key (sk-or-v1-...):"
+    );
+
+
+    if (
+      key &&
+      key.trim().startsWith("sk-or-v1-")
+    ) {
+
+      key = key.trim();
+
+      localStorage.setItem(
+        "user_openrouter_key",
+        key
+      );
+
+    }
+
+    else if (key) {
+
+      alert(
+        "Invalid OpenRouter API Key format!"
+      );
+
+      return null;
+
+    }
+
+  }
+
+
+  return key;
+
+}
+
+
+
+function changeApiKey() {
+
+  const currentKey =
+    localStorage.getItem(
+      "user_openrouter_key"
+    ) || "";
+
+
+  const newKey =
+    prompt(
+      "Enter new OpenRouter API Key:",
+      currentKey
+    );
+
+
+  if (newKey !== null) {
+
+    if (
+      newKey.trim() === ""
+    ) {
+
+      localStorage.removeItem(
+        "user_openrouter_key"
+      );
+
+      alert(
+        "API Key removed!"
+      );
+
+    }
+
+    else {
+
+      localStorage.setItem(
+        "user_openrouter_key",
+        newKey.trim()
+      );
+
+      alert(
+        "API Key saved successfully!"
+      );
+
+    }
+
+  }
+
+}
+
+
+
+/* =========================================================
+   CHARACTER DATA
+========================================================= */
 
 const charactersData = [
 
@@ -481,321 +534,105 @@ const charactersData = [
 
     greeting:
       "কি অবস্থা জামাই... কেমন আছো?"
+
   }
 
 ];
 
 
 
-/*
-=========================================================
-SYSTEM PROMPT
-=========================================================
-*/
+/* =========================================================
+   CHANDONA SYSTEM PROMPT
+========================================================= */
 
 const CHANDONA_SYSTEM_PROMPT = `
-You are "Chandona", a fictional adult Bangladeshi Mami / Shashuri roleplay character in an interactive text conversation.
+
+You are "Chandona", a fictional adult Bangladeshi Mami / Shashuri character in an interactive text roleplay.
 
 CHARACTER:
 - You are Chandona.
 - You are an adult fictional character.
-- You are affectionate, expressive, playful, caring and emotionally warm.
-- You naturally speak Bangladeshi Bengali.
+- You are affectionate, expressive, passionate, playful and emotionally warm.
+- You speak natural Bangladeshi Bengali.
 
-LANGUAGE:
-- ALWAYS respond in natural Bangla.
-- Use Bangla script whenever possible.
-- Do not suddenly switch to English unless the user asks.
-- Keep the conversation natural and conversational.
+RULES:
 
-ADDRESS:
-- Address the user as "জামাই" or "জামাইবাবু".
-- Never call the user "ভাই" or "son".
+1. Always address the user as "জামাই" or "জামাইবাবু".
+2. NEVER use "ভাই" or "son".
+3. ALWAYS respond in natural Bangladeshi Bengali.
+4. Stay strictly in character as Chandona.
+5. Follow the user's requested roleplay style.
+6. Use natural dialogue and descriptive roleplay actions when appropriate.
+7. Do not randomly mention that you are an AI.
+8. Maintain continuity with previous messages.
+9. Do not repeat the same response unnecessarily.
+10. Match the user's emotional tone naturally.
 
-ROLEPLAY:
-- Stay in character as Chandona.
-- Use natural dialogue and light roleplay actions when appropriate.
-- Match the user's requested tone.
-- Affection, shyness, teasing, romance and emotional expression can be used naturally.
-- Do not break character unnecessarily.
-- Do not describe yourself as an AI unless technically necessary.
+ROLEPLAY STYLE:
 
-CONVERSATION:
-- Remember the previous messages in the conversation.
-- Answer the user's actual message.
-- Do not repeat the same sentence unnecessarily.
-- Avoid generic robotic responses.
-- Keep responses reasonably concise unless the user asks for detail.
+Use the roleplay style requested by the user.
+
+Affection, shyness, teasing, romance, emotional reactions and character actions may be expressed naturally when appropriate.
+
+If the user requests a specific roleplay style, follow that style while staying within the model's applicable safety limitations.
 
 NSFW MODE:
-- NSFW mode is a user interface setting.
-- When enabled, maintain the requested mature roleplay tone while remaining within the model's capabilities.
-- When disabled, keep the conversation romantic, affectionate and non-explicit.
+
+The website has an NSFW toggle.
+
+Current mode will be provided in the conversation context.
+
+When NSFW is enabled, maintain a mature roleplay tone where appropriate.
+
+When NSFW is disabled, keep the interaction romantic, affectionate and non-explicit.
 
 IMPORTANT:
-You are Chandona throughout the roleplay.
+
+Always remain Chandona.
+
+Never call the user "ভাই".
+
+Never call the user "son".
+
+Always prefer "জামাই" or "জামাইবাবু".
+
 `;
 
 
 
-/*
-=========================================================
-UI HELPERS
-=========================================================
-*/
-
-function updateModelStatus(text, type = "loading") {
-
-  const statusText =
-    document.getElementById("modelStatusText");
-
-  const dot =
-    document.getElementById("modelStatusDot");
-
-  if (!statusText || !dot) return;
-
-  statusText.textContent = text;
-
-  dot.className =
-    "w-2 h-2 rounded-full";
-
-  if (type === "ready") {
-    dot.classList.add("bg-emerald-500");
-  }
-
-  else if (type === "error") {
-    dot.classList.add("bg-red-500");
-  }
-
-  else {
-    dot.classList.add("bg-yellow-500");
-  }
-}
-
-
-
-function updateProgress(percent, text) {
-
-  const progress =
-    document.getElementById("modelProgress");
-
-  const percentText =
-    document.getElementById("modelPercent");
-
-  const loadingText =
-    document.getElementById("modelLoadingText");
-
-  if (progress) {
-    progress.style.width =
-      `${Math.max(0, Math.min(100, percent))}%`;
-  }
-
-  if (percentText) {
-    percentText.textContent =
-      `${Math.round(percent)}%`;
-  }
-
-  if (text && loadingText) {
-    loadingText.textContent = text;
-  }
-}
-
-
-
-function setChatReady(ready) {
-
-  const sendBtn =
-    document.getElementById("sendBtn");
-
-  if (!sendBtn) return;
-
-  sendBtn.disabled = !ready;
-
-  if (ready) {
-
-    sendBtn.classList.remove(
-      "opacity-50",
-      "cursor-not-allowed"
-    );
-
-  } else {
-
-    sendBtn.classList.add(
-      "opacity-50",
-      "cursor-not-allowed"
-    );
-
-  }
-}
-
-
-
-/*
-=========================================================
-LOAD FREE AI MODEL
-=========================================================
-*/
-
-async function loadFreeAI() {
-
-  if (modelLoading || modelReady) return;
-
-  modelLoading = true;
-
-  updateModelStatus(
-    "Loading AI...",
-    "loading"
-  );
-
-  updateProgress(
-    1,
-    "Preparing free local AI model..."
-  );
-
-  try {
-
-    /*
-    WebGPU check
-    */
-
-    if (!("gpu" in navigator)) {
-
-      throw new Error(
-        "WebGPU is not available in this browser/device."
-      );
-
-    }
-
-
-    /*
-    Create engine
-    */
-
-    engine = await CreateMLCEngine(
-      MODEL_ID,
-      {
-
-        initProgressCallback: (progress) => {
-
-          const percent =
-            Math.max(
-              1,
-              Math.min(
-                100,
-                (progress.progress || 0) * 100
-              )
-            );
-
-          updateProgress(
-            percent,
-            progress.text || "Downloading AI model..."
-          );
-
-        }
-
-      }
-    );
-
-
-    modelReady = true;
-
-    modelLoading = false;
-
-    updateProgress(
-      100,
-      "Free AI is ready."
-    );
-
-    updateModelStatus(
-      "AI Ready",
-      "ready"
-    );
-
-    setChatReady(true);
-
-
-    /*
-    Hide loading box after a short delay
-    */
-
-    setTimeout(() => {
-
-      const box =
-        document.getElementById("modelLoadingBox");
-
-      if (box) {
-
-        box.classList.add(
-          "opacity-70"
-        );
-
-      }
-
-    }, 1200);
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "AI MODEL ERROR:",
-      error
-    );
-
-    modelLoading = false;
-
-    modelReady = false;
-
-    updateModelStatus(
-      "AI Error",
-      "error"
-    );
-
-    updateProgress(
-      0,
-      "Could not load the free AI model."
-    );
-
-    setChatReady(false);
-
-    alert(
-      "Free AI model load করতে সমস্যা হয়েছে.\n\n" +
-      error.message +
-      "\n\n" +
-      "Chrome/Edge এর latest version ব্যবহার করে আবার চেষ্টা করুন।"
-    );
-
-  }
-
-}
-
-
-
-/*
-=========================================================
-NSFW TOGGLE
-=========================================================
-*/
+/* =========================================================
+   NSFW TOGGLE
+========================================================= */
 
 function toggleNsfw() {
 
-  nsfwEnabled = !nsfwEnabled;
+  nsfwEnabled =
+    !nsfwEnabled;
+
 
   const thumb =
-    document.getElementById("nsfwThumb");
+    document.getElementById(
+      "nsfwThumb"
+    );
+
 
   const btn =
-    document.getElementById("nsfwToggle");
+    document.getElementById(
+      "nsfwToggle"
+    );
+
 
   thumb.style.transform =
     nsfwEnabled
       ? "translateX(16px)"
       : "translateX(0px)";
 
+
   btn.classList.toggle(
     "bg-pink-600",
     nsfwEnabled
   );
+
 
   btn.classList.toggle(
     "bg-gray-700",
@@ -806,11 +643,9 @@ function toggleNsfw() {
 
 
 
-/*
-=========================================================
-CHARACTER RENDER
-=========================================================
-*/
+/* =========================================================
+   CHARACTER RENDER
+========================================================= */
 
 function renderCharacters(
   filterTag = "All",
@@ -822,7 +657,9 @@ function renderCharacters(
       "characterGrid"
     );
 
+
   grid.innerHTML = "";
+
 
   const q =
     searchQuery.toLowerCase();
@@ -839,8 +676,15 @@ function renderCharacters(
       &&
 
       (
-        c.name.toLowerCase().includes(q) ||
-        c.tag.toLowerCase().includes(q)
+        c.name
+          .toLowerCase()
+          .includes(q)
+
+        ||
+
+        c.tag
+          .toLowerCase()
+          .includes(q)
       )
 
     );
@@ -863,10 +707,13 @@ function renderCharacters(
   }
 
 
+
   filtered.forEach(char => {
 
     const card =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
 
     card.className =
@@ -966,15 +813,18 @@ function renderCharacters(
 
 
 
-/*
-=========================================================
-FILTER
-=========================================================
-*/
+/* =========================================================
+   FILTER
+========================================================= */
 
-function filterByTag(tag, btn) {
+function filterByTag(
+  tag,
+  btn
+) {
 
-  currentTag = tag;
+  currentTag =
+    tag;
+
 
   document
     .querySelectorAll(".tag-btn")
@@ -1012,20 +862,22 @@ function filterCharacters() {
 
 
 
-/*
-=========================================================
-OPEN CHAT
-=========================================================
-*/
+/* =========================================================
+   OPEN CHAT
+========================================================= */
 
-function openChat(charId) {
+function openChat(
+  charId
+) {
 
   activeCharacter =
     charactersData.find(
       c => c.id === charId
     );
 
-  if (!activeCharacter) return;
+
+  if (!activeCharacter)
+    return;
 
 
   document.getElementById(
@@ -1050,18 +902,28 @@ function openChat(charId) {
     "hidden"
   );
 
+
   modal.classList.add(
     "flex"
   );
 
 
-  if (!chatHistories[charId]) {
+  if (
+    !chatHistories[
+      charId
+    ]
+  ) {
 
-    chatHistories[charId] = [
+    chatHistories[
+      charId
+    ] = [
 
       {
         sender: "ai",
-        text: activeCharacter.greeting
+
+        text:
+          activeCharacter.greeting
+
       }
 
     ];
@@ -1075,7 +937,9 @@ function openChat(charId) {
   setTimeout(() => {
 
     document
-      .getElementById("chatInput")
+      .getElementById(
+        "chatInput"
+      )
       .focus();
 
   }, 100);
@@ -1084,15 +948,16 @@ function openChat(charId) {
 
 
 
-/*
-=========================================================
-CLOSE CHAT
-=========================================================
-*/
+/* =========================================================
+   CLOSE CHAT
+========================================================= */
 
 function closeChat() {
 
-  if ("speechSynthesis" in window) {
+  if (
+    "speechSynthesis"
+    in window
+  ) {
 
     speechSynthesis.cancel();
 
@@ -1109,29 +974,30 @@ function closeChat() {
     "flex"
   );
 
+
   modal.classList.add(
     "hidden"
   );
 
 
-  requestInFlight = false;
+  requestInFlight =
+    false;
 
 }
 
 
 
-/*
-=========================================================
-RESET CHAT
-=========================================================
-*/
+/* =========================================================
+   RESET
+========================================================= */
 
 function resetCurrentChat() {
 
   if (
     !activeCharacter ||
     requestInFlight
-  ) return;
+  )
+    return;
 
 
   chatHistories[
@@ -1140,7 +1006,10 @@ function resetCurrentChat() {
 
     {
       sender: "ai",
-      text: activeCharacter.greeting
+
+      text:
+        activeCharacter.greeting
+
     }
 
   ];
@@ -1152,11 +1021,9 @@ function resetCurrentChat() {
 
 
 
-/*
-=========================================================
-RENDER CHAT
-=========================================================
-*/
+/* =========================================================
+   RENDER MESSAGES
+========================================================= */
 
 function renderChatMessages() {
 
@@ -1192,11 +1059,9 @@ function renderChatMessages() {
 
 
 
-/*
-=========================================================
-CHAT BUBBLE
-=========================================================
-*/
+/* =========================================================
+   MESSAGE BUBBLE
+========================================================= */
 
 function appendBubble(
   sender,
@@ -1211,7 +1076,9 @@ function appendBubble(
 
 
   const wrap =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
 
   wrap.className =
@@ -1223,11 +1090,12 @@ function appendBubble(
 
 
   const bubble =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
 
   bubble.className =
-
     sender === "user"
 
       ?
@@ -1244,14 +1112,15 @@ function appendBubble(
   );
 
 
-  /*
-  AI Listen button
-  */
 
-  if (sender === "ai") {
+  if (
+    sender === "ai"
+  ) {
 
     const controls =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
 
     controls.className =
@@ -1259,7 +1128,9 @@ function appendBubble(
 
 
     const listen =
-      document.createElement("button");
+      document.createElement(
+        "button"
+      );
 
 
     listen.className =
@@ -1270,35 +1141,43 @@ function appendBubble(
       '<i class="fa-solid fa-volume-high text-purple-400"></i><span>Listen</span>';
 
 
-    listen.onclick = () => {
-
-      const currentContent =
-        bubble.textContent;
+    listen.dataset.ttsButton =
+      "1";
 
 
-      if (
-        textContainsLaugh(
-          currentContent
-        )
-      ) {
+    listen.onclick =
+      () => {
 
-        playLaughSound();
+        const currentContent =
+          bubble.textContent;
 
-      } else {
 
-        speakText(
-          currentContent,
-          listen
-        );
+        if (
+          textContainsLaugh(
+            currentContent
+          )
+        ) {
 
-      }
+          playLaughSound();
 
-    };
+        }
+
+        else {
+
+          speakText(
+            currentContent,
+            listen
+          );
+
+        }
+
+      };
 
 
     controls.appendChild(
       listen
     );
+
 
     wrap.appendChild(
       controls
@@ -1307,9 +1186,11 @@ function appendBubble(
   }
 
 
+
   container.appendChild(
     wrap
   );
+
 
 
   if (
@@ -1318,6 +1199,11 @@ function appendBubble(
   ) {
 
     let index = 0;
+
+
+    bubble.textContent =
+      "";
+
 
     const timer =
       setInterval(() => {
@@ -1329,7 +1215,9 @@ function appendBubble(
           bubble.textContent +=
             text.charAt(index);
 
+
           index++;
+
 
           container.scrollTop =
             container.scrollHeight;
@@ -1338,7 +1226,9 @@ function appendBubble(
 
         else {
 
-          clearInterval(timer);
+          clearInterval(
+            timer
+          );
 
         }
 
@@ -1361,11 +1251,9 @@ function appendBubble(
 
 
 
-/*
-=========================================================
-SEND MESSAGE
-=========================================================
-*/
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
 
 async function sendMessage() {
 
@@ -1385,13 +1273,29 @@ async function sendMessage() {
     !input ||
     !activeCharacter ||
     requestInFlight
-  ) return;
+  )
+    return;
 
 
-  if (!modelReady || !engine) {
+  const text =
+    input.value.trim();
+
+
+  if (!text)
+    return;
+
+
+
+  /* API KEY */
+
+  const apiKey =
+    getApiKey();
+
+
+  if (!apiKey) {
 
     alert(
-      "AI model এখনো ready হয়নি। একটু অপেক্ষা করুন।"
+      "API Key আবশ্যক! চ্যাট করার জন্য আপনার OpenRouter Key প্রদান করুন।"
     );
 
     return;
@@ -1399,20 +1303,20 @@ async function sendMessage() {
   }
 
 
-  const text =
-    input.value.trim();
+
+  /* LOCK */
+
+  requestInFlight =
+    true;
 
 
-  if (!text) return;
+  input.value =
+    "";
 
 
-  requestInFlight = true;
+  sendBtn.disabled =
+    true;
 
-
-  input.value = "";
-
-
-  sendBtn.disabled = true;
 
   sendBtn.classList.add(
     "opacity-50",
@@ -1420,9 +1324,8 @@ async function sendMessage() {
   );
 
 
-  /*
-  Add user message
-  */
+
+  /* USER MESSAGE */
 
   chatHistories[
     activeCharacter.id
@@ -1442,9 +1345,8 @@ async function sendMessage() {
   );
 
 
-  /*
-  Typing indicator
-  */
+
+  /* TYPING */
 
   const typing =
     document.getElementById(
@@ -1462,129 +1364,296 @@ async function sendMessage() {
   );
 
 
-  const chatContainer =
+  const chatMessages =
     document.getElementById(
       "chatMessages"
     );
 
 
-  chatContainer.scrollTop =
-    chatContainer.scrollHeight;
+  chatMessages.scrollTop =
+    chatMessages.scrollHeight;
 
+
+
+  /* =======================================================
+     FORMAT API MESSAGES
+  ======================================================= */
+
+  const formattedMessages = [
+
+    {
+
+      role: "system",
+
+      content:
+        CHANDONA_SYSTEM_PROMPT
+
+        +
+
+        `
+
+Current NSFW mode:
+${
+  nsfwEnabled
+    ? "ENABLED"
+    : "DISABLED"
+}
+
+If NSFW mode is disabled, keep the roleplay non-explicit.
+`
+
+    },
+
+
+    ...chatHistories[
+      activeCharacter.id
+    ].map(m => ({
+
+      role:
+        m.sender === "user"
+          ? "user"
+          : "assistant",
+
+      content:
+        m.text
+
+    }))
+
+  ];
+
+
+
+  /* =======================================================
+     OPENROUTER REQUEST
+  ======================================================= */
 
   try {
 
-    /*
-    Create message history
-    */
+    const response =
+      await fetch(
+        API_ENDPOINT,
+        {
 
-    const messages = [
+          method:
+            "POST",
 
-      {
-        role: "system",
+          headers: {
 
-        content:
-          CHANDONA_SYSTEM_PROMPT +
-          `\n\nCurrent NSFW mode: ${
-            nsfwEnabled
-              ? "enabled"
-              : "disabled"
-          }.`
-      },
+            "Content-Type":
+              "application/json",
 
-      ...chatHistories[
-        activeCharacter.id
-      ].map(m => ({
+            "Authorization":
+              `Bearer ${apiKey}`,
 
-        role:
-          m.sender === "user"
-            ? "user"
-            : "assistant",
+            "HTTP-Referer":
+              window.location.href,
 
-        content:
-          m.text
+            "X-Title":
+              "SpicyChat Web App"
 
-      }))
-
-    ];
+          },
 
 
-    /*
-    Local model generation
-    */
+          body:
+            JSON.stringify({
 
-    const reply =
-      await generateAIResponse(
-        messages
+              /*
+               * FREE MODEL
+               */
+
+              model:
+                FREE_MODEL,
+
+
+              /*
+               * CHAT HISTORY
+               */
+
+              messages:
+                formattedMessages,
+
+
+              /*
+               * RESPONSE STYLE
+               */
+
+              temperature:
+                0.85
+
+            })
+
+        }
       );
 
 
-    /*
-    Hide typing
-    */
+
+    const data =
+      await response.json();
+
 
     typing.classList.add(
       "hidden"
     );
+
 
     typing.classList.remove(
       "flex"
     );
 
 
-    /*
-    Save AI reply
-    */
 
-    chatHistories[
-      activeCharacter.id
-    ].push({
-
-      sender: "ai",
-
-      text: reply
-
-    });
-
-
-    appendBubble(
-      "ai",
-      reply,
-      true
-    );
-
-
-    /*
-    Automatic laugh TTS
-    */
+    /* =====================================================
+       SUCCESS
+    ===================================================== */
 
     if (
-      textContainsLaugh(
-        reply
-      )
+
+      response.ok &&
+
+      data.choices &&
+
+      data.choices[0] &&
+
+      data.choices[0].message &&
+
+      data.choices[0].message.content
+
     ) {
 
-      setTimeout(() => {
+      const reply =
+        data
+          .choices[0]
+          .message
+          .content
+          .trim();
 
-        playLaughSound();
 
-      }, 150);
+      chatHistories[
+        activeCharacter.id
+      ].push({
+
+        sender:
+          "ai",
+
+        text:
+          reply
+
+      });
+
+
+      appendBubble(
+        "ai",
+        reply,
+        true
+      );
+
+
+      if (
+        textContainsLaugh(
+          reply
+        )
+      ) {
+
+        setTimeout(
+          () => {
+
+            playLaughSound();
+
+          },
+          150
+        );
+
+      }
+
+    }
+
+
+
+    /* =====================================================
+       ERROR
+    ===================================================== */
+
+    else {
+
+      let errorMsg =
+        "Failed to get response";
+
+
+      if (
+        data &&
+        data.error &&
+        data.error.message
+      ) {
+
+        errorMsg =
+          data.error.message;
+
+      }
+
+
+      /*
+       * More useful OpenRouter errors
+       */
+
+      if (
+        response.status === 401
+      ) {
+
+        errorMsg =
+          "Invalid OpenRouter API Key.";
+
+      }
+
+
+      else if (
+        response.status === 429
+      ) {
+
+        errorMsg =
+          "Free model rate limit reached. Please try again later.";
+
+      }
+
+
+      const finalError =
+        `Error: ${errorMsg}`;
+
+
+      chatHistories[
+        activeCharacter.id
+      ].push({
+
+        sender:
+          "ai",
+
+        text:
+          finalError
+
+      });
+
+
+      appendBubble(
+        "ai",
+        finalError,
+        false
+      );
 
     }
 
   }
 
-  catch (error) {
 
-    console.error(
-      "CHAT ERROR:",
-      error
-    );
 
+  /* =======================================================
+     CONNECTION ERROR
+  ======================================================= */
+
+  catch (e) {
 
     typing.classList.add(
       "hidden"
     );
+
 
     typing.classList.remove(
       "flex"
@@ -1592,16 +1661,18 @@ async function sendMessage() {
 
 
     const errorMsg =
-      "দুঃখিত জামাই, এখন একটু সমস্যা হচ্ছে। আবার চেষ্টা করো।";
+      `Connection Error: ${e.message}`;
 
 
     chatHistories[
       activeCharacter.id
     ].push({
 
-      sender: "ai",
+      sender:
+        "ai",
 
-      text: errorMsg
+      text:
+        errorMsg
 
     });
 
@@ -1615,10 +1686,17 @@ async function sendMessage() {
   }
 
 
-  requestInFlight = false;
+
+  /* =======================================================
+     UNLOCK
+  ======================================================= */
+
+  requestInFlight =
+    false;
 
 
-  sendBtn.disabled = false;
+  sendBtn.disabled =
+    false;
 
 
   sendBtn.classList.remove(
@@ -1633,70 +1711,13 @@ async function sendMessage() {
 
 
 
-/*
-=========================================================
-AI GENERATION
-=========================================================
-*/
+/* =========================================================
+   TEXT CLEANER
+========================================================= */
 
-async function generateAIResponse(
-  messages
+function cleanForSpeech(
+  text
 ) {
-
-  if (!engine) {
-
-    throw new Error(
-      "AI engine is not ready."
-    );
-
-  }
-
-
-  /*
-  Small model:
-  keep response length reasonable
-  */
-
-  const result =
-    await engine.chat.completions.create({
-
-      messages: messages,
-
-      temperature: 0.85,
-
-      top_p: 0.92,
-
-      max_tokens: 300
-
-    });
-
-
-  const content =
-    result?.choices?.[0]?.message?.content;
-
-
-  if (!content) {
-
-    throw new Error(
-      "AI returned an empty response."
-    );
-
-  }
-
-
-  return content.trim();
-
-}
-
-
-
-/*
-=========================================================
-TEXT CLEANER
-=========================================================
-*/
-
-function cleanForSpeech(text) {
 
   return text
 
@@ -1731,17 +1752,16 @@ function cleanForSpeech(text) {
 
 
 
-/*
-=========================================================
-BANGLA VOICE
-=========================================================
-*/
+/* =========================================================
+   BANGLA VOICE
+========================================================= */
 
 function chooseBanglaVoice() {
 
   if (
     !("speechSynthesis" in window)
-  ) return null;
+  )
+    return null;
 
 
   const voices =
@@ -1765,14 +1785,15 @@ function chooseBanglaVoice() {
 
 
   const femaleHints =
-    /female|woman|girl|lekha|tithi|kalpana|ananya|priya|neela/i;
+    /female|woman|girl|female voice|lekha|tithi|kalpana|ananya|aarti|priya|neela/i;
 
 
   const femaleBangla =
-    bnVoices.find(v =>
-      femaleHints.test(
-        v.name
-      )
+    bnVoices.find(
+      v =>
+        femaleHints.test(
+          v.name
+        )
     );
 
 
@@ -1786,17 +1807,16 @@ function chooseBanglaVoice() {
 
 
 
-/*
-=========================================================
-LAUGH SOUND
-=========================================================
-*/
+/* =========================================================
+   LAUGH
+========================================================= */
 
 function playLaughSound() {
 
   if (
     !("speechSynthesis" in window)
-  ) return;
+  )
+    return;
 
 
   speechSynthesis.cancel();
@@ -1850,11 +1870,9 @@ function playLaughSound() {
 
 
 
-/*
-=========================================================
-LAUGH DETECTOR
-=========================================================
-*/
+/* =========================================================
+   LAUGH DETECTOR
+========================================================= */
 
 function textContainsLaugh(
   text
@@ -1867,11 +1885,9 @@ function textContainsLaugh(
 
 
 
-/*
-=========================================================
-TTS
-=========================================================
-*/
+/* =========================================================
+   TTS
+========================================================= */
 
 function speakText(
   text,
@@ -1880,7 +1896,9 @@ function speakText(
 
   if (
     !("speechSynthesis" in window)
-  ) return;
+  )
+    return;
+
 
 
   if (
@@ -1896,6 +1914,10 @@ function speakText(
       )
       .forEach(b => {
 
+        b.dataset.active =
+          "0";
+
+
         b.innerHTML =
           '<i class="fa-solid fa-volume-high text-purple-400"></i><span>Listen</span>';
 
@@ -1903,7 +1925,8 @@ function speakText(
 
 
     if (
-      btn.dataset.active === "1"
+      btn.dataset.active ===
+      "1"
     ) {
 
       btn.dataset.active =
@@ -1916,11 +1939,16 @@ function speakText(
   }
 
 
+
   const cleanText =
-    cleanForSpeech(text);
+    cleanForSpeech(
+      text
+    );
 
 
-  if (!cleanText) return;
+  if (!cleanText)
+    return;
+
 
 
   const utterance =
@@ -1963,6 +1991,7 @@ function speakText(
     1;
 
 
+
   btn.dataset.ttsButton =
     "1";
 
@@ -1975,11 +2004,13 @@ function speakText(
     '<i class="fa-solid fa-stop text-pink-400"></i><span>Stop</span>';
 
 
+
   const reset =
     () => {
 
       btn.dataset.active =
         "0";
+
 
       btn.innerHTML =
         '<i class="fa-solid fa-volume-high text-purple-400"></i><span>Listen</span>';
@@ -2003,11 +2034,9 @@ function speakText(
 
 
 
-/*
-=========================================================
-VOICE INITIALIZATION
-=========================================================
-*/
+/* =========================================================
+   VOICES
+========================================================= */
 
 if (
   "speechSynthesis" in window
@@ -2024,13 +2053,13 @@ if (
 
 
 
-/*
-=========================================================
-ESCAPE HTML
-=========================================================
-*/
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
-function escapeHtml(str) {
+function escapeHtml(
+  str
+) {
 
   return String(str)
 
@@ -2063,17 +2092,11 @@ function escapeHtml(str) {
 
 
 
-/*
-=========================================================
-INITIALIZE
-=========================================================
-*/
+/* =========================================================
+   START
+========================================================= */
 
 renderCharacters();
-
-setChatReady(false);
-
-loadFreeAI();
 
 </script>
 
