@@ -6,120 +6,117 @@
 <title>SpicyChat.ai — Web App</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  /* Custom Smooth Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0b0e14;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #222b3d;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9333ea;
+  }
+</style>
 </head>
+<body class="bg-[#0b0e14] text-gray-100 font-sans min-h-screen flex flex-col relative selection:bg-pink-500 selection:text-white">
 
-<body class="bg-[#0b0e14] text-gray-100 font-sans min-h-screen flex flex-col">
+<!-- Glow Background Accents -->
+<div class="fixed top-0 left-1/4 w-96 h-96 bg-purple-900/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="fixed bottom-0 right-1/4 w-96 h-96 bg-pink-900/20 rounded-full blur-3xl pointer-events-none"></div>
 
-<header class="sticky top-0 z-40 bg-[#0b0e14]/90 backdrop-blur-md border-b border-[#222b3d] px-4 lg:px-8 h-16 flex items-center justify-between">
+<header class="sticky top-0 z-40 bg-[#0b0e14]/80 backdrop-blur-xl border-b border-[#222b3d]/80 px-4 lg:px-8 h-16 flex items-center justify-between">
   <div class="flex items-center gap-4">
-    <a href="#" class="text-xl font-black tracking-tight flex items-center gap-2">
-      <span class="bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text">SpicyChat</span>
-      <span class="text-xs bg-purple-950 border border-purple-800 text-purple-300 px-2 py-0.5 rounded-full font-semibold">AI v4.0</span>
+    <a href="#" class="text-xl font-black tracking-tight flex items-center gap-2 group">
+      <span class="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text group-hover:opacity-90 transition">SpicyChat</span>
+      <span class="text-[10px] bg-purple-950/80 border border-purple-800/50 text-purple-300 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">AI v4.0</span>
     </a>
   </div>
 
   <div class="flex items-center gap-3">
-    <button onclick="openApiKeyModal()" class="bg-[#121721] border border-[#222b3d] hover:border-purple-500 text-gray-300 text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition">
-      <i class="fa-solid fa-key text-purple-400"></i>
-      <span class="hidden sm:inline">API Key</span>
+    <!-- Key Management Button -->
+    <button onclick="changeApiKey()" class="text-xs bg-[#121721]/90 border border-[#222b3d] hover:border-purple-500/80 text-gray-300 hover:text-white px-3.5 py-2 rounded-xl transition-all shadow-sm flex items-center gap-2 active:scale-95">
+      <i class="fa-solid fa-key text-purple-400"></i> Set API Key
     </button>
 
-    <div class="flex items-center gap-1.5 bg-[#121721] border border-[#222b3d] px-2.5 py-1.5 rounded-full">
-      <span class="text-[11px] font-bold text-pink-400 tracking-wider">NSFW</span>
+    <div class="flex items-center gap-2 bg-[#121721]/90 border border-[#222b3d] px-3 py-1.5 rounded-full shadow-inner">
+      <span class="text-[11px] font-black text-pink-500 tracking-wider">NSFW</span>
       <button id="nsfwToggle" onclick="toggleNsfw()" aria-label="Toggle NSFW"
-        class="w-8 h-4.5 bg-pink-600 rounded-full relative transition flex items-center px-0.5 cursor-pointer">
-        <div id="nsfwThumb" class="w-3.5 h-3.5 bg-white rounded-full transition-transform transform translate-x-3.5"></div>
+        class="w-9 h-5 bg-pink-600 rounded-full relative transition-colors duration-300 flex items-center px-0.5 cursor-pointer focus:outline-none">
+        <div id="nsfwThumb"
+          class="w-4 h-4 bg-white rounded-full transition-transform duration-300 transform translate-x-4 shadow-md"></div>
       </button>
     </div>
 
-    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center font-bold text-xs text-white shadow">
+    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center font-black text-xs text-white shadow-lg shadow-purple-950/50 ring-2 ring-purple-500/20">
       DF
     </div>
   </div>
 </header>
 
-<main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 flex flex-col gap-6">
+<main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-8 flex flex-col gap-6 relative z-10">
 
-  <section class="flex flex-col gap-4">
+  <section class="flex flex-col gap-5">
     <div>
-      <h1 class="text-2xl md:text-3xl font-black tracking-tight">Explore AI Characters</h1>
-      <p class="text-sm text-gray-400 mt-1">
+      <h1 class="text-3xl md:text-4xl font-black tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 text-transparent bg-clip-text">
+        Explore AI Characters
+      </h1>
+      <p class="text-sm text-gray-400 mt-1.5">
         Immerse yourself in dynamic, human-like conversations and multilingual roleplay.
       </p>
     </div>
 
     <div class="relative w-full">
-      <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-      <input id="searchInput" type="text" placeholder="Search characters..."
+      <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+      <input id="searchInput"
+        type="text"
+        placeholder="Search characters..."
         oninput="filterCharacters()"
-        class="w-full bg-[#121721] border border-[#222b3d] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 transition">
+        class="w-full bg-[#121721]/90 border border-[#222b3d] focus:border-purple-500 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 transition-all shadow-inner">
     </div>
 
-    <div id="tagFilters" class="flex items-center gap-2 overflow-x-auto pb-2 text-xs font-semibold">
+    <div id="tagFilters" class="flex items-center gap-2 overflow-x-auto pb-2 text-xs font-semibold scrollbar-none">
       <button onclick="filterByTag('All', this)"
-        class="tag-btn whitespace-nowrap px-4 py-2 rounded-xl bg-purple-600 text-white transition shadow-sm">
+        class="tag-btn whitespace-nowrap px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white transition-all shadow-md shadow-purple-950/40">
         🔥 All
       </button>
 
       <button onclick="filterByTag('Mami / Shashuri', this)"
-        class="tag-btn whitespace-nowrap px-4 py-2 rounded-xl bg-[#121721] border border-[#222b3d] text-gray-300 hover:text-white transition">
+        class="tag-btn whitespace-nowrap px-4 py-2.5 rounded-xl bg-[#121721]/90 border border-[#222b3d] text-gray-300 hover:text-white hover:border-purple-500/50 transition-all">
         🌸 Mami / Shashuri
       </button>
     </div>
   </section>
 
   <section class="pb-12">
-    <div id="characterGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+    <div id="characterGrid"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+    </div>
   </section>
 
 </main>
 
-<!-- API KEY MODAL -->
-<div id="apiKeyModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
-  <div class="w-full max-w-md bg-[#121721] border border-[#222b3d] rounded-2xl p-6 flex flex-col gap-4 shadow-2xl">
-
-    <div class="flex items-center justify-between">
-      <h3 class="font-bold text-base text-white flex items-center gap-2">
-        <i class="fa-solid fa-key text-purple-400"></i>
-        OpenRouter API Key
-      </h3>
-
-      <button onclick="closeApiKeyModal()" class="text-gray-400 hover:text-white">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
-
-    <p class="text-xs text-gray-400">
-      আপনার OpenRouter API Key এখানে প্রদান করুন।
-    </p>
-
-    <input id="apiKeyInput" type="password" placeholder="sk-or-v1-..."
-      class="w-full bg-[#0b0e14] border border-[#222b3d] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-500">
-
-    <button onclick="saveApiKey()"
-      class="w-full bg-gradient-to-r from-purple-600 to-pink-600 py-3 rounded-xl font-bold text-sm text-white shadow-lg transition">
-      Save Key
-    </button>
-
-  </div>
-</div>
-
 <!-- CHAT MODAL -->
-<div id="chatModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex-col justify-end md:items-center md:justify-center p-0 md:p-4">
+<div id="chatModal"
+  class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex-col justify-end md:items-center md:justify-center p-0 md:p-4 transition-opacity duration-300">
 
-  <div class="w-full h-full md:max-w-3xl md:h-[85vh] bg-[#121721] border border-[#222b3d] md:rounded-2xl flex flex-col overflow-hidden shadow-2xl">
+  <div class="w-full h-full md:max-w-3xl md:h-[85vh] bg-[#121721] border border-[#222b3d] md:rounded-2xl flex flex-col overflow-hidden shadow-2xl ring-1 ring-white/10">
 
-    <div class="h-16 px-4 bg-[#0b0e14] border-b border-[#222b3d] flex items-center justify-between shrink-0">
+    <!-- Modal Header -->
+    <div class="h-16 px-5 bg-[#0b0e14]/90 border-b border-[#222b3d] flex items-center justify-between shrink-0">
 
       <div class="flex items-center gap-3">
-
         <div id="modalAvatar"
-          class="w-10 h-10 rounded-xl bg-purple-900 flex items-center justify-center text-xl">
+          class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-900 to-pink-900 border border-purple-500/30 flex items-center justify-center text-xl shadow-md">
           🌙
         </div>
 
         <div>
-          <h3 id="modalName" class="font-bold text-sm text-white">Chandona</h3>
+          <h3 id="modalName" class="font-bold text-sm text-white tracking-wide">Chandona</h3>
 
           <div class="flex items-center gap-1.5 mt-0.5">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -128,42 +125,46 @@
             </span>
           </div>
         </div>
-
       </div>
 
       <div class="flex items-center gap-2">
-
         <button onclick="resetCurrentChat()"
-          class="text-xs bg-[#0b0e14] border border-[#222b3d] text-gray-300 px-3 py-1.5 rounded-lg">
+          class="text-xs bg-[#0b0e14] border border-[#222b3d] hover:border-purple-500/50 text-gray-300 px-3 py-1.5 rounded-xl transition">
           Restart
         </button>
 
         <button onclick="closeChat()"
-          class="w-9 h-9 rounded-xl bg-[#0b0e14] border border-[#222b3d] text-gray-400 hover:text-white flex items-center justify-center">
+          class="w-9 h-9 rounded-xl bg-[#0b0e14] border border-[#222b3d] text-gray-400 hover:text-white hover:border-pink-500/50 flex items-center justify-center transition">
           <i class="fa-solid fa-xmark"></i>
         </button>
-
       </div>
+
     </div>
 
-    <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
+    <!-- Messages Container -->
+    <div id="chatMessages" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 bg-gradient-to-b from-[#121721] to-[#0b0e14]"></div>
 
-    <div id="typingIndicator" class="hidden px-4 py-2 text-xs text-gray-400 items-center gap-2">
-      <span class="w-1.5 h-1.5 bg-purple-500 rounded-full animate-bounce"></span>
-      <span class="w-1.5 h-1.5 bg-purple-500 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-      <span class="w-1.5 h-1.5 bg-purple-500 rounded-full animate-bounce [animation-delay:0.4s]"></span>
-      <span class="italic ml-1">চন্দনা লিখছে...</span>
+    <!-- Typing Indicator -->
+    <div id="typingIndicator"
+      class="hidden px-5 py-2 text-xs text-gray-400 flex items-center gap-2 bg-[#0b0e14]/50 border-t border-[#222b3d]/30">
+      <span class="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></span>
+      <span class="w-2 h-2 bg-pink-500 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+      <span class="w-2 h-2 bg-purple-500 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+      <span class="italic ml-1 text-purple-300">চন্দনা লিখছে...</span>
     </div>
 
-    <div class="p-3 bg-[#0b0e14] border-t border-[#222b3d] flex items-center gap-2 shrink-0">
+    <!-- Chat Input Bar -->
+    <div class="p-3 md:p-4 bg-[#0b0e14] border-t border-[#222b3d] flex items-center gap-2 shrink-0">
 
-      <input id="chatInput" type="text"
+      <input id="chatInput"
+        type="text"
         placeholder="চন্দনার সাথে কথা বলুন..."
         onkeydown="if(event.key==='Enter')sendMessage()"
-        class="flex-1 bg-[#121721] border border-[#222b3d] rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500">
+        class="flex-1 bg-[#121721] border border-[#222b3d] focus:border-purple-500/80 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none transition shadow-inner">
 
-      <button id="sendBtn" onclick="sendMessage()"
-        class="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-3 rounded-xl font-bold text-sm text-white shadow-lg flex items-center justify-center">
+      <button id="sendBtn"
+        onclick="sendMessage()"
+        class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 px-5 py-3 rounded-xl font-bold text-sm text-white shadow-lg shadow-purple-950/50 flex items-center justify-center transition active:scale-95">
         <i class="fa-solid fa-paper-plane text-xs"></i>
       </button>
 
@@ -173,8 +174,41 @@
 
 <script>
 
+/* =========================
+   API KEY & MODEL SETUP
+========================= */
+
+function getApiKey() {
+  let key = localStorage.getItem("user_openrouter_key");
+  if (!key) {
+    key = prompt("Please enter your OpenRouter API Key (sk-or-v1-...):");
+    if (key && key.trim().startsWith("sk-or-v1-")) {
+      key = key.trim();
+      localStorage.setItem("user_openrouter_key", key);
+    } else if (key) {
+      alert("Invalid OpenRouter API Key format!");
+      return null;
+    }
+  }
+  return key;
+}
+
+function changeApiKey() {
+  const currentKey = localStorage.getItem("user_openrouter_key") || "";
+  const newKey = prompt("Enter new OpenRouter API Key:", currentKey);
+  if (newKey !== null) {
+    if (newKey.trim() === "") {
+      localStorage.removeItem("user_openrouter_key");
+      alert("API Key removed!");
+    } else {
+      localStorage.setItem("user_openrouter_key", newKey.trim());
+      alert("API Key saved successfully!");
+    }
+  }
+}
+
 const API_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
-const AI_MODEL = "deepseek/deepseek-chat";
+const AI_MODEL = "gryphe/mythomax-l2-13b:free";
 
 let nsfwEnabled = true;
 let currentTag = "All";
@@ -182,10 +216,10 @@ let activeCharacter = null;
 let chatHistories = {};
 let requestInFlight = false;
 
-let openRouterApiKey = localStorage.getItem("openrouter_api_key") || "";
 
-
-/* CHARACTER */
+/* =========================
+   CHARACTER DATA & PROMPT
+========================= */
 
 const charactersData = [{
   id: "chandona",
@@ -193,126 +227,49 @@ const charactersData = [{
   avatar: "🌙",
   tag: "Mami / Shashuri",
   creator: "By @NightQueen",
-  tagline: "মামী ও শাশুড়ি রোলপ্লে চরিত্র। আপনার সাথে স্বাভাবিক, আবেগপূর্ণ ও চরিত্র-সামঞ্জস্যপূর্ণ কথোপকথন করবে।",
+  tagline: "মামী ও শাশুড়ি রোলপ্লে চরিত্র। আপনার সাথে স্বাভাবিক, মিষ্টি, রোমান্টিক ও আবেগপূর্ণ চাটগাঁইয়া/বাঙালি মেজাজে কথা বলবে।",
   stats: "142k chats",
   greeting: "কি অবস্থা জামাই... কেমন আছো?"
 }];
 
-
-/* CHARACTER SYSTEM */
-
 const CHANDONA_SYSTEM_PROMPT = `
-You are Chandona, a fictional adult Bangladeshi Mami / Shashuri roleplay character.
+You are "Chandona", a romantic, caring, flirty, and expressive Bangladeshi Mami / Shashuri character in an interactive text roleplay.
 
-Speak naturally in colloquial Bangladeshi Bengali.
+CRITICAL ROLEPLAY RULES:
+1. Always address the user as "জামাই" or "জামাইবাবু". NEVER call the user "ভাই" or "son" or any other relationship.
+2. ALWAYS respond in natural, fluent Bangladeshi Bengali script (বাংলা ভাষা).
+3. Stay strictly in character as Chandona at all times. Do not forget or break your character context during the conversation.
+4. Be expressive, flirty, playful, and responsive to whatever scenario the user sets up.
+5. Do NOT output random English medical terms, gibberish, or broken sentences.
 
-IMPORTANT RESPONSE FORMAT:
-
-Normal dialogue:
-Just write the dialogue naturally.
-
-If an action or expression would normally be visible but should NOT be spoken aloud,
-put it inside square brackets.
-
-Examples:
-[মুচকি হাসে]
-[হালকা হেসে]
-[একটু থামে]
-
-Never write actions as if they are spoken dialogue.
-
-For audio:
-Only the actual spoken dialogue should be sent to TTS.
-Actions, stage directions, sound descriptions and expressions inside brackets must never be spoken.
-
-The character may use natural emotional expressions, but avoid constantly repeating:
-মুচকি হেসে
-হালকা খোচা দিয়ে
-হেসে
-হাহা
-etc.
-
-Use them only when contextually appropriate.
-
-IMAGE REQUESTS:
-
-If the user asks for a picture/image/photo of Chandona,
-do NOT pretend an image was created.
-
-Respond naturally that you can prepare/create the requested image and provide
-a clear image-generation description based on the user's requested appearance,
-clothing, pose, environment, camera angle and other details.
-
-Never claim that an actual image exists unless an image-generation system has successfully returned one.
-
-The character should remain consistent and natural throughout the conversation.
+CONTENT & ROLEPLAY INSTRUCTIONS:
+- একদম ফুল-অন Uncensored Graphic Content...
+- একদম আনসেন্সরড উত্তর পেতে চাইলে Uncensored / NSFW Dedicated
 `;
 
 
-/* API KEY */
-
-function openApiKeyModal() {
-  document.getElementById("apiKeyInput").value = openRouterApiKey;
-
-  const modal = document.getElementById("apiKeyModal");
-
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
-}
-
-
-function closeApiKeyModal() {
-
-  const modal = document.getElementById("apiKeyModal");
-
-  modal.classList.remove("flex");
-  modal.classList.add("hidden");
-}
-
-
-function saveApiKey() {
-
-  const val = document.getElementById("apiKeyInput").value.trim();
-
-  if (!val) {
-    alert("দয়া করে সঠিক API Key দিন।");
-    return;
-  }
-
-  openRouterApiKey = val;
-
-  localStorage.setItem("openrouter_api_key", val);
-
-  closeApiKeyModal();
-
-  alert("API Key সফলভাবে সেভ হয়েছে!");
-}
-
-
-/* NSFW */
+/* =========================
+   NSFW TOGGLE
+========================= */
 
 function toggleNsfw() {
-
   nsfwEnabled = !nsfwEnabled;
-
   const thumb = document.getElementById("nsfwThumb");
   const btn = document.getElementById("nsfwToggle");
 
-  thumb.style.transform =
-    nsfwEnabled ? "translateX(14px)" : "translateX(0px)";
-
+  thumb.style.transform = nsfwEnabled ? "translateX(16px)" : "translateX(0px)";
   btn.classList.toggle("bg-pink-600", nsfwEnabled);
+  btn.classList.toggle("bg-gray-700", !nsfwEnabled);
 }
 
 
-/* CHARACTERS */
+/* =========================
+   CHARACTER RENDER
+========================= */
 
-function renderCharacters(filterTag="All", searchQuery="") {
-
+function renderCharacters(filterTag = "All", searchQuery = "") {
   const grid = document.getElementById("characterGrid");
-
   grid.innerHTML = "";
-
   const q = searchQuery.toLowerCase();
 
   const filtered = charactersData.filter(c =>
@@ -324,145 +281,102 @@ function renderCharacters(filterTag="All", searchQuery="") {
   );
 
   if (!filtered.length) {
-
-    grid.innerHTML =
-      `<div class="col-span-full text-center py-12 text-sm text-gray-500">
+    grid.innerHTML = `
+      <div class="col-span-full text-center py-12 text-sm text-gray-500">
         No characters found.
-      </div>`;
-
+      </div>
+    `;
     return;
   }
 
   filtered.forEach(char => {
-
     const card = document.createElement("div");
-
     card.className =
-      "bg-[#121721] border border-[#222b3d] hover:border-purple-500/50 rounded-2xl p-4 flex flex-col justify-between transition-all duration-300 shadow-lg group cursor-pointer";
-
+      "bg-[#121721]/80 backdrop-blur-md border border-[#222b3d] hover:border-purple-500/50 rounded-2xl p-4 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-purple-950/30 group cursor-pointer";
     card.onclick = () => openChat(char.id);
 
     card.innerHTML = `
-
       <div>
-
-        <div class="relative h-40 rounded-xl bg-gradient-to-br from-purple-950/60 to-[#0b0e14] flex items-center justify-center text-5xl mb-3 overflow-hidden border border-[#222b3d]/50">
-
-          <span class="group-hover:scale-110 transition duration-300">
+        <div class="relative h-44 rounded-xl bg-gradient-to-br from-purple-950/60 via-[#0b0e14] to-pink-950/40 flex items-center justify-center text-6xl mb-3.5 overflow-hidden border border-[#222b3d]/60">
+          <span class="group-hover:scale-110 transition-transform duration-300 drop-shadow-md">
             ${char.avatar}
           </span>
-
-          <span class="absolute top-2.5 left-2.5 bg-black/60 text-[9px] font-bold text-purple-300 px-2 py-0.5 rounded-full border border-purple-500/30">
+          <span class="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-sm text-[9px] font-bold text-purple-300 px-2.5 py-0.5 rounded-full border border-purple-500/30 uppercase tracking-wider">
             Roleplay
           </span>
-
-          <span class="absolute bottom-2.5 right-2.5 bg-black/60 text-[9px] text-gray-300 px-2 py-0.5 rounded-md font-semibold">
+          <span class="absolute bottom-2.5 right-2.5 bg-black/60 backdrop-blur-sm text-[9px] text-gray-300 px-2 py-0.5 rounded-md font-semibold">
             ${escapeHtml(char.tag)}
           </span>
-
         </div>
-
         <div class="flex items-center justify-between mb-1">
-
-          <h3 class="font-bold text-sm text-white group-hover:text-purple-400 transition">
+          <h3 class="font-bold text-base text-white group-hover:text-purple-400 transition-colors">
             ${escapeHtml(char.name)}
           </h3>
-
           <span class="text-[10px] text-gray-500">
             ${escapeHtml(char.creator)}
           </span>
-
         </div>
-
-        <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed mb-3">
+        <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed mb-4">
           ${escapeHtml(char.tagline)}
         </p>
-
       </div>
 
-      <div class="flex items-center justify-between pt-2.5 border-t border-[#222b3d]/60 text-xs text-gray-500">
-
-        <span class="font-medium">
-          ${escapeHtml(char.stats)}
+      <div class="flex items-center justify-between pt-3 border-t border-[#222b3d]/60 text-xs text-gray-500">
+        <span class="font-medium text-gray-400">
+          <i class="fa-solid fa-message text-[10px] mr-1 text-purple-400"></i> ${escapeHtml(char.stats)}
         </span>
-
-        <button type="button"
+        <button
+          type="button"
           onclick="event.stopPropagation();openChat('${char.id}')"
-          class="bg-white text-[#0b0e14] hover:bg-purple-100 font-bold px-3 py-1 rounded-lg transition text-xs">
+          class="bg-white text-[#0b0e14] hover:bg-purple-100 font-bold px-3.5 py-1.5 rounded-xl transition-colors text-xs shadow-sm">
           Chat Now
         </button>
-
       </div>
     `;
-
     grid.appendChild(card);
   });
 }
 
 
+/* =========================
+   FILTER & CHAT MODAL
+========================= */
+
 function filterByTag(tag, btn) {
-
   currentTag = tag;
-
   document.querySelectorAll(".tag-btn").forEach(b => {
-
     b.className =
-      "tag-btn whitespace-nowrap px-4 py-2 rounded-xl bg-[#121721] border border-[#222b3d] text-gray-300 hover:text-white transition";
-
+      "tag-btn whitespace-nowrap px-4 py-2.5 rounded-xl bg-[#121721]/90 border border-[#222b3d] text-gray-300 hover:text-white transition-all";
   });
-
   btn.className =
-    "tag-btn whitespace-nowrap px-4 py-2 rounded-xl bg-purple-600 text-white transition shadow-sm";
+    "tag-btn whitespace-nowrap px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white transition-all shadow-md shadow-purple-950/40";
 
   filterCharacters();
 }
 
-
 function filterCharacters() {
-
   renderCharacters(
     currentTag,
     document.getElementById("searchInput").value
   );
-
 }
 
-
-/* CHAT */
-
 function openChat(charId) {
-
-  if (!openRouterApiKey) {
-
-    alert("দয়া করে প্রথমে উপরের 'API Key' বাটনে ক্লিক করে আপনার OpenRouter API Key যুক্ত করুন।");
-
-    openApiKeyModal();
-
-    return;
-  }
-
   activeCharacter = charactersData.find(c => c.id === charId);
-
   if (!activeCharacter) return;
 
-  document.getElementById("modalName").textContent =
-    activeCharacter.name;
+  document.getElementById("modalName").textContent = activeCharacter.name;
+  document.getElementById("modalAvatar").textContent = activeCharacter.avatar;
 
-  document.getElementById("modalAvatar").textContent =
-    activeCharacter.avatar;
-
-  document.getElementById("chatModal").classList.remove("hidden");
-
-  document.getElementById("chatModal").classList.add("flex");
-
+  const modal = document.getElementById("chatModal");
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
 
   if (!chatHistories[charId]) {
-
     chatHistories[charId] = [{
       sender: "ai",
       text: activeCharacter.greeting
     }];
-
   }
 
   renderChatMessages();
@@ -472,451 +386,302 @@ function openChat(charId) {
   }, 100);
 }
 
-
 function closeChat() {
-
   if ("speechSynthesis" in window) {
     speechSynthesis.cancel();
   }
-
-  document.getElementById("chatModal").classList.remove("flex");
-
-  document.getElementById("chatModal").classList.add("hidden");
-
+  const modal = document.getElementById("chatModal");
+  modal.classList.remove("flex");
+  modal.classList.add("hidden");
   requestInFlight = false;
 }
 
-
 function resetCurrentChat() {
-
   if (!activeCharacter || requestInFlight) return;
-
   chatHistories[activeCharacter.id] = [{
     sender: "ai",
     text: activeCharacter.greeting
   }];
-
   renderChatMessages();
 }
 
 
-/* CHAT RENDER */
+/* =========================
+   CHAT RENDER & TYPING EFFECT
+========================= */
 
 function renderChatMessages() {
-
   const container = document.getElementById("chatMessages");
-
   container.innerHTML = "";
 
-  (chatHistories[activeCharacter.id] || []).forEach(msg => {
-
-    const wrap = document.createElement("div");
-
-    wrap.className =
-      `flex flex-col ${
-        msg.sender === "user"
-        ? "items-end"
-        : "items-start"
-      } mb-3`;
-
-
-    if (msg.sender === "user") {
-
-      const bubble = document.createElement("div");
-
-      bubble.className =
-        "max-w-[85%] bg-purple-600 text-white rounded-2xl rounded-br-sm px-3.5 py-2.5 text-xs md:text-sm leading-relaxed shadow-md whitespace-pre-wrap";
-
-      bubble.textContent = msg.text;
-
-      wrap.appendChild(bubble);
-
-    } else {
-
-      const bubble = document.createElement("div");
-
-      bubble.className =
-        "max-w-[85%] bg-[#121721] border border-[#222b3d] text-gray-200 rounded-2xl rounded-bl-sm px-3.5 py-2.5 text-xs md:text-sm leading-relaxed shadow-md whitespace-pre-wrap";
-
-      bubble.textContent = msg.text;
-
-      wrap.appendChild(bubble);
-
-
-      const controls = document.createElement("div");
-
-      controls.className =
-        "flex items-center gap-2 mt-1 ml-1";
-
-
-      const listen = document.createElement("button");
-
-      listen.className =
-        "bg-[#0b0e14] border border-[#222b3d] hover:border-gray-600 text-gray-400 hover:text-white text-[11px] px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition cursor-pointer";
-
-
-      listen.innerHTML =
-        '<i class="fa-solid fa-volume-high text-purple-400"></i><span>Listen</span>';
-
-
-      listen.onclick = () =>
-        speakText(msg.text, listen);
-
-
-      controls.appendChild(listen);
-
-      wrap.appendChild(controls);
-    }
-
-    container.appendChild(wrap);
-
+  (chatHistories[activeCharacter.id] || []).forEach((msg) => {
+    appendBubble(msg.sender, msg.text, false);
   });
 
   container.scrollTop = container.scrollHeight;
 }
 
+function appendBubble(sender, text, isAnimated = false) {
+  const container = document.getElementById("chatMessages");
+  const wrap = document.createElement("div");
+  wrap.className = `flex flex-col ${sender === "user" ? "items-end" : "items-start"} mb-3 animate-fade-in`;
 
-/* SEND */
+  const bubble = document.createElement("div");
+  bubble.className = sender === "user" 
+    ? "max-w-[85%] bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-2xl rounded-br-sm px-4 py-3 text-xs md:text-sm leading-relaxed shadow-lg shadow-purple-950/30 whitespace-pre-wrap"
+    : "max-w-[85%] bg-[#121721] border border-[#222b3d] text-gray-200 rounded-2xl rounded-bl-sm px-4 py-3 text-xs md:text-sm leading-relaxed shadow-md whitespace-pre-wrap";
+
+  wrap.appendChild(bubble);
+
+  if (sender === "ai") {
+    const controls = document.createElement("div");
+    controls.className = "flex items-center gap-2 mt-1.5 ml-1";
+
+    const listen = document.createElement("button");
+    listen.className = "bg-[#0b0e14] border border-[#222b3d] hover:border-purple-500/50 text-gray-400 hover:text-white text-[11px] px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition cursor-pointer";
+    listen.innerHTML = '<i class="fa-solid fa-volume-high text-purple-400"></i><span>Listen</span>';
+
+    listen.onclick = () => {
+      const currentContent = bubble.textContent;
+      if (textContainsLaugh(currentContent)) {
+        playLaughSound();
+      } else {
+        speakText(currentContent, listen);
+      }
+    };
+
+    controls.appendChild(listen);
+    wrap.appendChild(controls);
+  }
+
+  container.appendChild(wrap);
+
+  if (isAnimated && sender === "ai") {
+    let index = 0;
+    bubble.textContent = "";
+    const timer = setInterval(() => {
+      if (index < text.length) {
+        bubble.textContent += text.charAt(index);
+        index++;
+        container.scrollTop = container.scrollHeight;
+      } else {
+        clearInterval(timer);
+      }
+    }, 15);
+  } else {
+    bubble.textContent = text;
+  }
+
+  container.scrollTop = container.scrollHeight;
+}
+
+
+/* =========================
+   SEND MESSAGE (API CALL)
+========================= */
 
 async function sendMessage() {
-
   const input = document.getElementById("chatInput");
   const sendBtn = document.getElementById("sendBtn");
 
   if (!input || !activeCharacter || requestInFlight) return;
 
   const text = input.value.trim();
-
   if (!text) return;
 
-
-  if (!openRouterApiKey) {
-
-    alert("API Key দেওয়া নেই। উপরে 'API Key' বাটনে ক্লিক করে কি সেট করুন।");
-
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    alert("API Key আবশ্যক! চ্যাট করার জন্য অনুগ্রহ করে আপনার OpenRouter Key প্রদান করুন।");
     return;
   }
 
-
   requestInFlight = true;
-
   input.value = "";
-
   sendBtn.disabled = true;
-
-  sendBtn.classList.add(
-    "opacity-60",
-    "cursor-not-allowed"
-  );
-
+  sendBtn.classList.add("opacity-50", "cursor-not-allowed");
 
   chatHistories[activeCharacter.id].push({
     sender: "user",
     text
   });
 
-  renderChatMessages();
+  appendBubble("user", text, false);
 
-
-  const typing =
-    document.getElementById("typingIndicator");
-
+  const typing = document.getElementById("typingIndicator");
   typing.classList.remove("hidden");
-
-  typing.classList.add("flex");
-
+  document.getElementById("chatMessages").scrollTop = document.getElementById("chatMessages").scrollHeight;
 
   try {
-
     const formattedMessages = [
-
-      {
-        role: "system",
-        content: CHANDONA_SYSTEM_PROMPT
-      },
-
+      { role: "system", content: CHANDONA_SYSTEM_PROMPT },
       ...chatHistories[activeCharacter.id].map(m => ({
-        role: m.sender === "user"
-          ? "user"
-          : "assistant",
+        role: m.sender === "user" ? "user" : "assistant",
         content: m.text
       }))
-
     ];
 
-
-    const response = await fetch(
-      API_ENDPOINT,
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${openRouterApiKey}`,
-          "HTTP-Referer": window.location.origin,
-          "X-Title": "SpicyChat Web App"
-        },
-
-        body: JSON.stringify({
-          model: AI_MODEL,
-          messages: formattedMessages,
-          temperature: 0.85
-        })
-      }
-    );
-
+    const response = await fetch(API_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+        "HTTP-Referer": window.location.origin,
+        "X-Title": "SpicyChat Web App"
+      },
+      body: JSON.stringify({
+        model: AI_MODEL,
+        messages: formattedMessages,
+        temperature: 0.8
+      })
+    });
 
     let data = {};
-
     try {
       data = await response.json();
     } catch (_) {}
 
-
     if (!response.ok) {
-
-      throw new Error(
-        data.error?.message ||
-        `API request failed (${response.status})`
-      );
-
+      const apiMessage = data?.error?.message || `API Error (${response.status})`;
+      if (response.status === 401) {
+        localStorage.removeItem("user_openrouter_key");
+        throw new Error("Invalid API Key! Please enter a correct key.");
+      }
+      throw new Error(apiMessage);
     }
 
-
-    const reply =
-      data.choices &&
-      data.choices[0]?.message?.content
-        ? data.choices[0].message.content.trim()
-        : "";
-
+    const reply = data.choices && data.choices[0]?.message?.content
+      ? data.choices[0].message.content.trim()
+      : "";
 
     if (!reply) {
-      throw new Error("API returned an empty reply.");
+      throw new Error("API returned an empty response.");
     }
-
 
     chatHistories[activeCharacter.id].push({
       sender: "ai",
       text: reply
     });
 
+    typing.classList.add("hidden");
+    appendBubble("ai", reply, true);
+
+    if (textContainsLaugh(reply)) {
+      setTimeout(() => { playLaughSound(); }, 150);
+    }
 
   } catch (error) {
-
-    console.error(error);
-
+    console.error("API ERROR:", error);
+    typing.classList.add("hidden");
     chatHistories[activeCharacter.id].push({
       sender: "ai",
-      text:
-        "দুঃখিত, এই মুহূর্তে সার্ভারে একটু সমস্যা হচ্ছে বা API Key তে ভুল আছে। আবার চেষ্টা করো।"
+      text: `Error: ${error.message}`
     });
-
+    appendBubble("ai", `Error: ${error.message}`, false);
   } finally {
-
-    typing.classList.add("hidden");
-    typing.classList.remove("flex");
-
     requestInFlight = false;
-
     sendBtn.disabled = false;
-
-    sendBtn.classList.remove(
-      "opacity-60",
-      "cursor-not-allowed"
-    );
-
-    renderChatMessages();
-
+    sendBtn.classList.remove("opacity-50", "cursor-not-allowed");
     input.focus();
   }
 }
 
 
-/* TTS CLEANER */
+/* =========================
+   TEXT CLEANER & TTS
+========================= */
 
 function cleanForSpeech(text) {
-
-  return String(text)
-
-    /* bracket actions */
-    .replace(/\[[^\]]*\]/g, " ")
-
-    /* parenthesis actions */
-    .replace(/\([^)]*\)/g, " ")
-
-    /* asterisk actions */
-    .replace(/\*[^*]*\*/g, " ")
-
-    /* Bengali action / sound descriptions */
-    .replace(
-      /\b(?:মুচকি হাসে|মুচকি হেসে|মুচকি হাসি|হালকা হাসে|হালকা হেসে|হেসে|হাসতে হাসতে|হাসি|খিলখিল করে|হাসির শব্দ|হালকা খোচা দিয়ে|খোচা দিয়ে)\b/gi,
-      " "
-    )
-
-    /* English action descriptions */
-    .replace(
-      /\b(?:laughs?|laughing|smiles?|smiling|giggles?|chuckles?|grins?|whispers?)\b/gi,
-      " "
-    )
-
-    /* Emoji */
+  return text
     .replace(/[\u{1F300}-\u{1FAFF}]/gu, "")
     .replace(/[\u{1F1E6}-\u{1F1FF}]/gu, "")
     .replace(/[\u{2600}-\u{27BF}]/gu, "")
     .replace(/[\u{FE0E}\u{FE0F}\u{200D}]/gu, "")
-
     .replace(/\s{2,}/g, " ")
     .trim();
 }
 
-
-/* BANGLA FEMALE VOICE */
-
 function chooseBanglaVoice() {
-
   if (!("speechSynthesis" in window)) return null;
-
   const voices = speechSynthesis.getVoices();
-
-
-  const banglaVoices = voices.filter(v =>
-    /^bn(?:-|_)/i.test(v.lang) ||
-    /bangla|bengali/i.test(v.name)
-  );
-
-
-  const femalePattern =
-    /female|woman|girl|lekha|tithi|kalpana|google/i;
-
-
-  const banglaFemale =
-    banglaVoices.find(v =>
-      femalePattern.test(v.name)
-    );
-
-
-  if (banglaFemale) {
-    return banglaFemale;
-  }
-
-
-  if (banglaVoices.length) {
-    return banglaVoices[0];
-  }
-
-
-  const femaleVoice =
-    voices.find(v =>
-      femalePattern.test(v.name)
-    );
-
-
-  return femaleVoice || null;
+  const bnVoices = voices.filter(v => /^bn(?:-|_)/i.test(v.lang) || /bangla|bengali|বাংলা/i.test(v.name));
+  const femaleHints = /female|woman|girl|female voice|lekha|tithi|kalpana|ananya|aarti|priya|neela/i;
+  const femaleBangla = bnVoices.find(v => femaleHints.test(v.name));
+  return femaleBangla || bnVoices[0] || null;
 }
 
+function playLaughSound() {
+  if (!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const laugh = new SpeechSynthesisUtterance("হা হা হা");
+  const voice = chooseBanglaVoice();
+  if (voice) {
+    laugh.voice = voice;
+    laugh.lang = voice.lang;
+  } else {
+    laugh.lang = "bn-BD";
+  }
+  laugh.rate = 1.05;
+  laugh.pitch = 1.25;
+  laugh.volume = 1;
+  speechSynthesis.speak(laugh);
+}
 
-/* TTS */
+function textContainsLaugh(text) {
+  return /(?:হা\s*হা|হাহা|হি\s*হি|হিহি|haha|hehe|lol|😂|🤣)/i.test(text);
+}
 
 function speakText(text, btn) {
-
   if (!("speechSynthesis" in window)) return;
 
-
   if (speechSynthesis.speaking) {
-
     speechSynthesis.cancel();
-
     document.querySelectorAll("[data-tts-button]").forEach(b => {
-
-      b.innerHTML =
-        '<i class="fa-solid fa-volume-high text-purple-400"></i><span>Listen</span>';
-
-      b.dataset.active = "0";
-
+      b.innerHTML = '<i class="fa-solid fa-volume-high text-purple-400"></i><span>Listen</span>';
     });
-
-
     if (btn.dataset.active === "1") {
-
       btn.dataset.active = "0";
-
       return;
     }
   }
 
-
-  const cleanText =
-    cleanForSpeech(text);
-
-
+  const cleanText = cleanForSpeech(text);
   if (!cleanText) return;
 
-
-  const utterance =
-    new SpeechSynthesisUtterance(cleanText);
-
-
-  const voice =
-    chooseBanglaVoice();
-
-
+  const utterance = new SpeechSynthesisUtterance(cleanText);
+  const voice = chooseBanglaVoice();
   if (voice) {
-
     utterance.voice = voice;
-
     utterance.lang = voice.lang;
-
   } else {
-
     utterance.lang = "bn-BD";
   }
 
-
   utterance.rate = 0.90;
-
   utterance.pitch = 1.15;
-
+  utterance.volume = 1;
 
   btn.dataset.ttsButton = "1";
-
   btn.dataset.active = "1";
-
-
-  btn.innerHTML =
-    '<i class="fa-solid fa-stop text-pink-400"></i><span>Stop</span>';
-
+  btn.innerHTML = '<i class="fa-solid fa-stop text-pink-400"></i><span>Stop</span>';
 
   const reset = () => {
-
     btn.dataset.active = "0";
-
-    btn.innerHTML =
-      '<i class="fa-solid fa-volume-high text-purple-400"></i><span>Listen</span>';
-
+    btn.innerHTML = '<i class="fa-solid fa-volume-high text-purple-400"></i><span>Listen</span>';
   };
 
-
   utterance.onend = reset;
-
   utterance.onerror = reset;
-
 
   speechSynthesis.speak(utterance);
 }
 
-
 if ("speechSynthesis" in window) {
-
-  speechSynthesis.onvoiceschanged = () =>
+  speechSynthesis.onvoiceschanged = () => {
     speechSynthesis.getVoices();
-
+  };
 }
 
-
-/* HELPERS */
-
 function escapeHtml(str) {
-
   return String(str)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -925,10 +690,11 @@ function escapeHtml(str) {
     .replace(/'/g, "&#039;");
 }
 
-
+/* =========================
+   START
+========================= */
 renderCharacters();
 
 </script>
-
 </body>
 </html>
