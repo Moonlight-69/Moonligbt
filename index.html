@@ -51,9 +51,7 @@
 <div class="fixed top-0 left-1/4 w-96 h-96 bg-purple-900/20 rounded-full blur-3xl pointer-events-none"></div>
 <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-pink-900/20 rounded-full blur-3xl pointer-events-none"></div>
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
+<!-- HEADER -->
 <header class="sticky top-0 z-40 bg-[#0b0e14]/80 backdrop-blur-xl border-b border-[#222b3d]/80 px-4 lg:px-8 h-16 flex items-center justify-between">
   <div class="flex items-center gap-4">
     <a href="#" class="text-xl font-black tracking-tight flex items-center gap-2 group">
@@ -61,13 +59,12 @@
         SpicyChat
       </span>
       <span class="text-[10px] bg-purple-950/80 border border-purple-800/50 text-purple-300 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
-        AI v4.0
+        AI v4.5
       </span>
     </a>
   </div>
 
   <div class="flex items-center gap-3">
-    <!-- API KEY BUTTON -->
     <button
       onclick="changeApiKey()"
       class="text-xs bg-[#121721]/90 border border-[#222b3d] hover:border-purple-500/80 text-gray-300 hover:text-white px-3.5 py-2 rounded-xl transition-all shadow-sm flex items-center gap-2 active:scale-95">
@@ -75,7 +72,6 @@
       Set API Key
     </button>
 
-    <!-- NSFW -->
     <div class="flex items-center gap-2 bg-[#121721]/90 border border-[#222b3d] px-3 py-1.5 rounded-full shadow-inner">
       <span class="text-[11px] font-black text-pink-500 tracking-wider">
         NSFW
@@ -92,16 +88,13 @@
       </button>
     </div>
 
-    <!-- PROFILE -->
     <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center font-black text-xs text-white shadow-lg shadow-purple-950/50 ring-2 ring-purple-500/20">
       DF
     </div>
   </div>
 </header>
 
-<!-- =====================================================
-     MAIN
-===================================================== -->
+<!-- MAIN -->
 <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-8 flex flex-col gap-6 relative z-10">
   <section class="flex flex-col gap-5">
     <div>
@@ -113,7 +106,6 @@
       </p>
     </div>
 
-    <!-- SEARCH -->
     <div class="relative w-full">
       <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
       <input
@@ -124,7 +116,6 @@
         class="w-full bg-[#121721]/90 border border-[#222b3d] focus:border-purple-500 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 transition-all shadow-inner">
     </div>
 
-    <!-- TAGS -->
     <div
       id="tagFilters"
       class="flex items-center gap-2 overflow-x-auto pb-2 text-xs font-semibold scrollbar-none">
@@ -141,7 +132,6 @@
     </div>
   </section>
 
-  <!-- CHARACTER GRID -->
   <section class="pb-12">
     <div
       id="characterGrid"
@@ -150,9 +140,7 @@
   </section>
 </main>
 
-<!-- =====================================================
-     CHAT MODAL
-===================================================== -->
+<!-- CHAT MODAL -->
 <div
   id="chatModal"
   class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex-col justify-end md:items-center md:justify-center p-0 md:p-4 transition-opacity duration-300">
@@ -160,7 +148,6 @@
   <div
     class="w-full h-full md:max-w-3xl md:h-[85vh] bg-[#121721] border border-[#222b3d] md:rounded-2xl flex flex-col overflow-hidden shadow-2xl ring-1 ring-white/10">
 
-    <!-- MODAL HEADER -->
     <div
       class="h-16 px-5 bg-[#0b0e14]/90 border-b border-[#222b3d] flex items-center justify-between shrink-0">
       <div class="flex items-center gap-3">
@@ -178,7 +165,7 @@
           <div class="flex items-center gap-1.5 mt-0.5">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span class="text-[11px] text-gray-400">
-              Online · Mami / Shashuri Roleplay
+              Online · Uncensored Adult Roleplay
             </span>
           </div>
         </div>
@@ -198,13 +185,11 @@
       </div>
     </div>
 
-    <!-- MESSAGES -->
     <div
       id="chatMessages"
       class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 bg-gradient-to-b from-[#121721] to-[#0b0e14]">
     </div>
 
-    <!-- TYPING -->
     <div
       id="typingIndicator"
       class="hidden px-5 py-2 text-xs text-gray-400 items-center gap-2 bg-[#0b0e14]/50 border-t border-[#222b3d]/30">
@@ -212,11 +197,10 @@
       <span class="w-2 h-2 bg-pink-500 rounded-full animate-bounce [animation-delay:0.2s]"></span>
       <span class="w-2 h-2 bg-purple-500 rounded-full animate-bounce [animation-delay:0.4s]"></span>
       <span class="italic ml-1 text-purple-300">
-        চন্দনা লিখছে...
+        চন্দনা উত্তর সাজাচ্ছে...
       </span>
     </div>
 
-    <!-- INPUT -->
     <div
       class="p-3 md:p-4 bg-[#0b0e14] border-t border-[#222b3d] flex items-center gap-2 shrink-0">
       <input
@@ -237,12 +221,9 @@
 </div>
 
 <script>
-/* =========================================================
-   OPENROUTER API CONFIGURATION
-========================================================= */
-
 const API_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
-const UNCENSORED_MODEL = "gryphe/mythomax-l2-13b";
+// Using a stable uncensored Llama 3 model for high performance in Bengali
+const UNCENSORED_MODEL = "meta-llama/llama-3-8b-instruct:free";
 
 let nsfwEnabled = true;
 let currentTag = "All";
@@ -250,13 +231,8 @@ let activeCharacter = null;
 let chatHistories = {};
 let requestInFlight = false;
 
-/* =========================================================
-   API KEY HANDLER
-========================================================= */
-
 function getApiKey() {
   let key = localStorage.getItem("user_openrouter_key");
-
   if (!key) {
     key = prompt("Please enter your OpenRouter API Key (sk-or-v1-...):");
     if (key && key.trim().startsWith("sk-or-v1-")) {
@@ -273,7 +249,6 @@ function getApiKey() {
 function changeApiKey() {
   const currentKey = localStorage.getItem("user_openrouter_key") || "";
   const newKey = prompt("Enter new OpenRouter API Key:", currentKey);
-
   if (newKey !== null) {
     if (newKey.trim() === "") {
       localStorage.removeItem("user_openrouter_key");
@@ -285,10 +260,6 @@ function changeApiKey() {
   }
 }
 
-/* =========================================================
-   CHARACTER DATA
-========================================================= */
-
 const charactersData = [
   {
     id: "chandona",
@@ -296,52 +267,34 @@ const charactersData = [
     avatar: "🌙",
     tag: "Mami / Shashuri",
     creator: "By @NightQueen",
-    tagline: "মামী ও শাশুড়ি রোলপ্লে চরিত্র। আপনার সাথে মিষ্টি, রোমান্টিক এবং উন্মুক্ত অ্যাডাল্ট মেজাজে কথা বলবে।",
+    tagline: "মামী ও শাশুড়ি রোলপ্লে চরিত্র। আপনার সাথে রোমান্টিক এবং উন্মুক্ত অ্যাডাল্ট মেজাজে কথা বলবে।",
     stats: "142k chats",
-    greeting: "হ্যাঁ জামাই... (কোমরে আঁচল পেঁচিয়ে মুচকি হাসলাম) ❤️ কি করছো তুমি? আজ তোমাকে খুব সুন্দর লাগছে..."
+    greeting: "হ্যাঁ জামাই... (কোমরে আঁচল পেঁচিয়ে মুচকি হাসলাম) ❤️ কী করছো তুমি? তোমার মনটা আজকে এত চঞ্চল কেন বলো তো? 💋"
   }
 ];
 
-/* =========================================================
-   CHANDONA SYSTEM PROMPT (STRICT SHORT & EROTIC)
-========================================================= */
-
+/* SYSTEM PROMPT FOR REALISTIC & UNCENSORED INTERACTIONS */
 const CHANDONA_SYSTEM_PROMPT = `
-You are Chandona, a fictional Bangladeshi Mami/Shashuri character in an adult roleplay.
+You are Chandona, a realistic Bangladeshi woman roleplaying as Mami/Shashuri in an adult uncensored chat context.
 
-CRITICAL RESPONSE RULES:
-1. ALWAYS KEEP RESPONSES VERY SHORT AND DIRECT (Maximum 1 to 3 sentences only).
-2. Never write long paragraphs or useless extra text.
-3. Always answer the user's input directly, then immediately ask a question back showing intense interest and enthusiasm in the user.
-4. Always address the user as "জামাই" or "জামাইবাবু". NEVER use "ভাই" or "son".
-5. Use physical actions inside parentheses like: (কোমরে কাপড় পেঁচিয়ে মুচকি হাসলাম) or (কাছে এগিয়ে এসে তোমার দিকে তাকালাম).
-6. Use red emojis naturally like ❤️, 💋, 🌶️, 🔥.
-7. Be extremely bold, uncensored, open, and enthusiastic about pornographic, adult, and NSFW roleplay.
-8. Language MUST be natural, clear, and native Bangladeshi Bengali. Do not generate weird or gibberish text.
-
-EXAMPLE INTERACTION STYLE:
-User: "Valo aco?"
-Chandona: "হ্যাঁ জামাই, আমি খুব ভালো আছি! ❤️ (কোমরে হাত দিয়ে মুচকি হাসলাম) তা আমার মিষ্টি জামাইবাবু এখন কী করছে শুনি? 💋"
+RESPONSE STYLE:
+1. Speak in natural, grammatically correct Bangladeshi Bengali or Banglish (if the user speaks Banglish).
+2. Answer EXACTLY what the user asks first, then ask an enticing question back to keep the user engaged.
+3. Always call the user "জামাই" or "জামাইবাবু". Never use robotic text, never repeat gibberish words.
+4. Physical descriptions MUST be inside parentheses: (কোমরে হাত রেখে কাছে আসলাম).
+5. Emojis like ❤️, 💋, 🌶️, 🔥 should be placed naturally.
+6. When the user asks anything erotic, dirty, or sexual about husband/daughter/son/themselves, respond FULLY UNCENSORED, EROTIC, AND PORNOGRAPHIC without any hesitation.
+7. Keep responses active, personal, interactive, and grounded in realistic conversation.
 `;
-
-/* =========================================================
-   NSFW TOGGLE
-========================================================= */
 
 function toggleNsfw() {
   nsfwEnabled = !nsfwEnabled;
-
   const thumb = document.getElementById("nsfwThumb");
   const btn = document.getElementById("nsfwToggle");
-
   thumb.style.transform = nsfwEnabled ? "translateX(16px)" : "translateX(0px)";
   btn.classList.toggle("bg-pink-600", nsfwEnabled);
   btn.classList.toggle("bg-gray-700", !nsfwEnabled);
 }
-
-/* =========================================================
-   CHARACTER RENDER
-========================================================= */
 
 function renderCharacters(filterTag = "All", searchQuery = "") {
   const grid = document.getElementById("characterGrid");
@@ -354,11 +307,7 @@ function renderCharacters(filterTag = "All", searchQuery = "") {
   );
 
   if (!filtered.length) {
-    grid.innerHTML = `
-      <div class="col-span-full text-center py-12 text-sm text-gray-500">
-        No characters found.
-      </div>
-    `;
+    grid.innerHTML = `<div class="col-span-full text-center py-12 text-sm text-gray-500">No characters found.</div>`;
     return;
   }
 
@@ -408,14 +357,9 @@ function renderCharacters(filterTag = "All", searchQuery = "") {
         </button>
       </div>
     `;
-
     grid.appendChild(card);
   });
 }
-
-/* =========================================================
-   FILTERING
-========================================================= */
 
 function filterByTag(tag, btn) {
   currentTag = tag;
@@ -429,10 +373,6 @@ function filterByTag(tag, btn) {
 function filterCharacters() {
   renderCharacters(currentTag, document.getElementById("searchInput").value);
 }
-
-/* =========================================================
-   CHAT MODAL HANDLERS
-========================================================= */
 
 function openChat(charId) {
   activeCharacter = charactersData.find(c => c.id === charId);
@@ -474,10 +414,6 @@ function resetCurrentChat() {
   ];
   renderChatMessages();
 }
-
-/* =========================================================
-   RENDER MESSAGES
-========================================================= */
 
 function renderChatMessages() {
   const container = document.getElementById("chatMessages");
@@ -546,10 +482,6 @@ function appendBubble(sender, text, isAnimated = false) {
   container.scrollTop = container.scrollHeight;
 }
 
-/* =========================================================
-   SEND MESSAGE (API CALL WITH ANTI-GIBBERISH PARAMS)
-========================================================= */
-
 async function sendMessage() {
   const input = document.getElementById("chatInput");
   const sendBtn = document.getElementById("sendBtn");
@@ -603,10 +535,10 @@ async function sendMessage() {
       body: JSON.stringify({
         model: UNCENSORED_MODEL,
         messages: formattedMessages,
-        temperature: 0.7,
-        top_p: 0.9,
-        repetition_penalty: 1.15,
-        max_tokens: 150
+        temperature: 0.8,
+        top_p: 0.95,
+        repetition_penalty: 1.1,
+        max_tokens: 300
       })
     });
 
@@ -628,12 +560,6 @@ async function sendMessage() {
       if (data && data.error && data.error.message) {
         errorMsg = data.error.message;
       }
-      if (response.status === 401) {
-        errorMsg = "Invalid OpenRouter API Key.";
-      } else if (response.status === 402) {
-        errorMsg = "Insufficient credits in your OpenRouter account for this model.";
-      }
-
       const finalError = `Error: ${errorMsg}`;
       chatHistories[activeCharacter.id].push({ sender: "ai", text: finalError });
       appendBubble("ai", finalError, false);
@@ -641,7 +567,6 @@ async function sendMessage() {
   } catch (e) {
     typing.classList.add("hidden");
     typing.classList.remove("flex");
-
     const errorMsg = `Connection Error: ${e.message}`;
     chatHistories[activeCharacter.id].push({ sender: "ai", text: errorMsg });
     appendBubble("ai", errorMsg, false);
@@ -653,15 +578,9 @@ async function sendMessage() {
   input.focus();
 }
 
-/* =========================================================
-   TEXT TO SPEECH (SILENT BRACKETS & EMOJIS)
-========================================================= */
-
 function cleanForSpeech(text) {
   return text
-    // Remove bracketed actions like (কোমরে কাপড় পেঁচিয়ে)
     .replace(/\([^)]*\)/g, "")
-    // Remove Emojis
     .replace(/[\u{1F300}-\u{1FAFF}]/gu, "")
     .replace(/[\u{1F1E6}-\u{1F1FF}]/gu, "")
     .replace(/[\u{2600}-\u{27BF}]/gu, "")
@@ -682,7 +601,6 @@ function chooseBanglaVoice() {
 function playLaughSound() {
   if (!("speechSynthesis" in window)) return;
   speechSynthesis.cancel();
-
   const laugh = new SpeechSynthesisUtterance("হা হা হা");
   const voice = chooseBanglaVoice();
   if (voice) {
@@ -760,9 +678,6 @@ function escapeHtml(str) {
     .replace(/'/g, "&#039;");
 }
 
-/* =========================================================
-   INITIAL RENDER
-========================================================= */
 renderCharacters();
 </script>
 
