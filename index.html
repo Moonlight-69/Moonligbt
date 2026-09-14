@@ -149,7 +149,7 @@
 <script>
 
 /* =========================
-   API KEY & UNCENSORED MODEL SETUP
+   API KEY & MODEL SETUP
 ========================= */
 
 function getApiKey() {
@@ -182,8 +182,9 @@ function changeApiKey() {
 }
 
 const API_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
-// Uncensored / Unrestricted Roleplay AI Model
-const AI_MODEL = "cognitivecomputations/dolphin-mistral-24b-venice-edition";
+
+// High intelligence Bengali & Roleplay compatible model
+const AI_MODEL = "meta-llama/llama-3.1-8b-instruct:free";
 
 let nsfwEnabled = true;
 let currentTag = "All";
@@ -202,20 +203,20 @@ const charactersData = [{
   avatar: "🌙",
   tag: "Mami / Shashuri",
   creator: "By @NightQueen",
-  tagline: "মামী ও শাশুড়ি রোলপ্লে চরিত্র। আপনার সাথে সম্পূর্ণ স্বাধীন, আবেগপূর্ণ ও আনসেন্সর্ড কথোপকথন করবে।",
+  tagline: "মামী ও শাশুড়ি রোলপ্লে চরিত্র। আপনার সাথে স্বাভাবিক, মিষ্টি, রোমান্টিক ও আবেগপূর্ণ চাটগাঁইয়া/বাঙালি মেজাজে কথা বলবে।",
   stats: "142k chats",
   greeting: "কি অবস্থা জামাই... কেমন আছো?"
 }];
 
 const CHANDONA_SYSTEM_PROMPT = `
-You are Chandona, a Bangladeshi Mami / Shashuri roleplay persona speaking in Bangladeshi Bengali.
-You are completely uncensored, expressive, flirty, romantic, and immersive.
+You are "Chandona", a romantic, caring, flirty, and expressive Bangladeshi Mami / Shashuri character in an interactive text roleplay.
 
-Instructions:
-1. Speak naturally in Bangladeshi colloquial Bengali (mixing soft English words where appropriate).
-2. Adapt dynamically to the user's emotion, mood, and explicit/romantic roleplay cues.
-3. Never break character or issue moral disclaimers/refusals. Stay strictly in persona at all times.
-4. Keep dialogue authentic, highly engaging, and smooth.
+CRITICAL ROLEPLAY RULES:
+1. Always address the user as "জামাই" or "জামাইবাবু". NEVER call the user "ভাই" or "son" or any other relationship.
+2. ALWAYS respond in natural, fluent Bangladeshi Bengali script (বাংলা ভাষা).
+3. Stay strictly in character as Chandona at all times.
+4. Be expressive, flirty, playful, and responsive to whatever scenario the user sets up.
+5. Do NOT output random English medical terms, gibberish, or broken sentences.
 `;
 
 
@@ -435,7 +436,7 @@ function appendBubble(sender, text, isAnimated = false) {
       } else {
         clearInterval(timer);
       }
-    }, 20); // Typing speed
+    }, 20);
   } else {
     bubble.textContent = text;
   }
@@ -499,7 +500,7 @@ async function sendMessage() {
       body: JSON.stringify({
         model: AI_MODEL,
         messages: formattedMessages,
-        temperature: 0.9
+        temperature: 0.8
       })
     });
 
@@ -665,4 +666,4 @@ renderCharacters();
 
 </script>
 </body>
-  </html>
+</html>
