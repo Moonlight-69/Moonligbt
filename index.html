@@ -172,7 +172,7 @@
 <script>
 
 /* =========================
-   API KEY & MODEL SETUP
+   API KEY SETUP
 ========================= */
 
 function getApiKey() {
@@ -205,14 +205,6 @@ function changeApiKey() {
 }
 
 const API_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
-
-// সচল ফ্রি মডেলের তালিকা (প্রথমটি ফেল করলে পর্যায়ক্রমে পরেরগুলো ব্যবহার করবে)
-const FREE_MODELS = [
-  "qwen/qwen-2.5-72b-instruct:free",
-  "deepseek/deepseek-chat:free",
-  "mistralai/mistral-7b-instruct:free",
-  "meta-llama/llama-3.1-8b-instruct:free"
-];
 
 let nsfwEnabled = true;
 let currentTag = "All";
@@ -476,7 +468,7 @@ function appendBubble(sender, text, isAnimated = false) {
 
 
 /* =========================
-   SEND MESSAGE (WITH FALLBACK)
+   SEND MESSAGE (OPENROUTER FREE)
 ========================= */
 
 async function sendMessage() {
@@ -490,7 +482,7 @@ async function sendMessage() {
 
   const apiKey = getApiKey();
   if (!apiKey) {
-    alert("API Key আবশ্যক! চ্যাট করার জন্য অনুগ্রহ করে আপনার OpenRouter Key প্রদান করুন।");
+    alert("API Key আবশ্যক! চ্যাট করার জন্য আপনার OpenRouter Key প্রদান করুন।");
     return;
   }
 
@@ -518,55 +510,47 @@ async function sendMessage() {
     }))
   ];
 
-  let reply = null;
-  let lastError = "";
-
-  // অটোমেটিক একের পর এক ফ্রি মডেল দিয়ে চেষ্টা করবে
-  for (const model of FREE_MODELS) {
-    try {
-      const response = await fetch(API_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`,
-          "HTTP-Referer": window.location.origin,
-          "X-Title": "SpicyChat Web App"
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: formattedMessages,
-          temperature: 0.85
-        })
-      });
-
-      let data = {};
-      try { data = await response.json(); } catch (_) {}
-
-      if (response.ok && data.choices && data.choices[0]?.message?.content) {
-        reply = data.choices[0].message.content.trim();
-        break; // সফল হলে লুপ বন্ধ করবে
-      } else {
-        lastError = data?.error?.message || `HTTP ${response.status}`;
-      }
-    } catch (e) {
-      lastError = e.message;
-    }
-  }
-
-  typing.classList.add("hidden");
-
-  if (reply) {
-    chatHistories[activeCharacter.id].push({
-      sender: "ai",
-      text: reply
+  try {
+    const response = await fetch(API_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+        "HTTP-Referer": window.location.origin,
+        "X-Title": "SpicyChat Web App"
+      },
+      body: JSON.stringify({
+        model: "openrouter/free", // অটো-রাউটার ব্যবহারের কারণে সবসময় সচল ফ্রি মডেলে চলে যাবে
+        messages: formattedMessages,
+        temperature: 0.85
+      })
     });
-    appendBubble("ai", reply, true);
 
-    if (textContainsLaugh(reply)) {
-      setTimeout(() => { playLaughSound(); }, 150);
+    const data = await response.json();
+    typing.classList.add("hidden");
+
+    if (response.ok && data.choices && data.choices[0]?.message?.content) {
+      const reply = data.choices[0].message.content.trim();
+      chatHistories[activeCharacter.id].push({
+        sender: "ai",
+        text: reply
+      });
+      appendBubble("ai", reply, true);
+
+      if (textContainsLaugh(reply)) {
+        setTimeout(() => { playLaughSound(); }, 150);
+      }
+    } else {
+      const errorMsg = `Error: ${data?.error?.message || "Failed to get response"}`;
+      chatHistories[activeCharacter.id].push({
+        sender: "ai",
+        text: errorMsg
+      });
+      appendBubble("ai", errorMsg, false);
     }
-  } else {
-    const errorMsg = `Error: ${lastError || "All free models are currently down."}`;
+  } catch (e) {
+    typing.classList.add("hidden");
+    const errorMsg = `Connection Error: ${e.message}`;
     chatHistories[activeCharacter.id].push({
       sender: "ai",
       text: errorMsg
@@ -693,3 +677,4 @@ renderCharacters();
 </script>
 </body>
 </html>
+y
