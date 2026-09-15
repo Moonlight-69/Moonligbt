@@ -101,13 +101,24 @@ function getApiKey() {
 
 function changeApiKey() {
   const currentKey = localStorage.getItem("user_together_key") || "";
-  const newKey = prompt("আপনার Together AI API Key এখানে দিন:", currentKey);
+  const newKey = prompt("ওয়েবসাইটে প্রবেশ করতে আপনার Together AI API Key দিন:", currentKey);
   if (newKey !== null) {
     if (newKey.trim() === "") {
-      localStorage.removeItem("user_together_key");
+      alert("API Key দেওয়া বাধ্যতামূলক!");
+      changeApiKey(); // খালি রাখলে আবার চাইবে
     } else {
       localStorage.setItem("user_together_key", newKey.trim());
+      getApiKey();
     }
+  }
+}
+
+// সাইটে ঢোকার সাথে সাথে বা পেজ লোড হলেই API Key চেক করবে
+function checkAuthOnLoad() {
+  let key = localStorage.getItem("user_together_key");
+  if (!key || key.trim() === "") {
+    changeApiKey();
+  } else {
     getApiKey();
   }
 }
@@ -142,13 +153,13 @@ function renderCharacters() {
 }
 
 function openChat(charId) {
-  activeCharacter = charactersData.find(c => c.id === charId);
   const key = getApiKey();
   if (!key) {
     changeApiKey();
     if (!getApiKey()) return;
   }
 
+  activeCharacter = charactersData.find(c => c.id === charId);
   document.getElementById("modalName").textContent = activeCharacter.name;
   document.getElementById("modalAvatar").textContent = activeCharacter.avatar;
   document.getElementById("chatModal").classList.replace("hidden", "flex");
@@ -265,7 +276,7 @@ async function sendMessage() {
         ...recentHistory.map(m => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text }))
       ];
 
-      const res = altFetchText = await fetch(TEXT_API_ENDPOINT, {
+      const res = await fetch(TEXT_API_ENDPOINT, {
         method: "POST",
         headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -302,7 +313,7 @@ async function sendMessage() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  getApiKey();
+  checkAuthOnLoad();
   renderCharacters();
 });
 </script>
