@@ -18,52 +18,9 @@
 <body class="bg-[#0b0e14] text-gray-100 font-sans min-h-screen flex flex-col relative selection:bg-pink-500 selection:text-white">
 
 <!-- API KEY ENTRY GATE MODAL (প্রবেশের আগের সিকিউরিটি গেট) -->
-<div id="apiKeyModal" class="fixed inset-0 z-50 bg-[#0b0e14] flex items-center justify-center p-4 hidden">
-  <div class="max-w-md w-full bg-[#121721] border border-[#222b3d] rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-500/30 flex items-center justify-center text-purple-400 text-lg">
-        <i class="fa-solid fa-key"></i>
-      </div>
-      <div>
-        <h2 class="font-bold text-base text-white">Enter Together AI API Key</h2>
-<p class="text-[11px] text-gray-400">ওয়েবসাইটে প্রবেশ করতে আপনার Together AI API Key দিন</p>
-      </div>
-    </div>
-     <input id="modalApiKeyInput" type="password" placeholder="Enter your Together AI API key..." class="bg-[#0b0e14] border border-[#222b3d] rounded-xl px-4 py-3 w-full text-white">
-    <button onclick="submitApiKey()" class="bg-gradient-to-r from-purple-600 to-pink-600 font-bold py-3 rounded-xl text-sm text-white shadow-lg hover:opacity-90 transition">
-     <button onclick="submitApiKey()" ...>
-    Enter Website
-     </button>
-    </button>
-  </div>
-</div>
 
-<header class="sticky top-0 z-40 bg-[#0b0e14]/85 backdrop-blur-xl border-b border-[#222b3d] px-4 lg:px-8 h-16 flex items-center justify-between">
-  <div class="flex items-center gap-4">
-    <span class="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text font-black text-xl">Chandona AI</span>
-    <span class="text-[10px] bg-purple-950/80 border border-purple-800/50 text-purple-300 px-2.5 py-0.5 rounded-full font-bold uppercase">Uncensored Chat & Image Gen</span>
-  </div>
-  <button onclick="openApiKeyModal()" id="apiKeyBtn" class="text-xs bg-[#121721] border border-[#222b3d] text-gray-300 px-3.5 py-2 rounded-xl flex items-center gap-2 hover:border-purple-500/50">
-    <i class="fa-solid fa-key text-purple-400"></i>
-    <span id="keyBtnText">Set API Key</span>
-  </button>
-</header>
 
-<main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-8 flex flex-col gap-6">
-  <div>
-    <h1 class="text-3xl font-black text-white">Character</h1>
-    <p class="text-sm text-gray-400 mt-1">আপনার পছন্দের ক্যারেক্টারের সাথে চ্যাট শুরু করুন।</p>
-  </div>
-  <section class="pb-12">
-    <div id="characterGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
-  </section>
-</main>
-
-<!-- CHAT MODAL -->
-<div id="chatModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex-col justify-end md:items-center md:justify-center p-0 md:p-4">
-  <div class="w-full h-full md:max-w-3xl md:h-[85vh] bg-[#121721] border border-[#222b3d] md:rounded-2xl flex flex-col overflow-hidden shadow-2xl">
-    
-    <div class="h-16 px-5 bg-[#0b0e14] border-b border-[#222b3d] flex items-center justify-between">
+3d] flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div id="modalAvatar" class="w-10 h-10 rounded-xl bg-purple-900 border border-purple-500/30 flex items-center justify-center text-xl">🌙</div>
         <div>
@@ -86,7 +43,7 @@
     </div>
 
     <div class="p-3 md:p-4 bg-[#0b0e14] border-t border-[#222b3d] flex items-center gap-2">
-      <input id="chatInput" type="text" placeholder="কথা বলুন বা 'একটি ছবি দাও' লিখুন..." onkeydown="if(event.key==='Enter')sendMessage()" class="flex-1 bg-[#121721] border border-[#222b3d] focus:border-purple-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
+      <input id="chatInput" type="text" placeholder="আসো..ম্যাসেজ দিয়ে মাল বের করে দাও..." onkeydown="if(event.key==='Enter')sendMessage()" class="flex-1 bg-[#121721] border border-[#222b3d] focus:border-purple-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
       <button id="sendBtn" onclick="sendMessage()" class="bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 rounded-xl font-bold text-sm text-white shadow-lg">
         <i class="fa-solid fa-paper-plane"></i>
       </button>
@@ -98,8 +55,8 @@
 const TEXT_API_ENDPOINT = "https://api.together.xyz/v1/chat/completions";
 const IMAGE_API_ENDPOINT = "https://api.together.xyz/v1/images/generations";
 
-const TEXT_MODEL = "NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO";
-const IMAGE_MODEL = "black-forest-labs/FLUX.1-schnell"; 
+  
+const TEXT_MODEL = "meta-llama/Llama-3.3-70B-Instruct-Turbo";
 
 let activeCharacter = null;
 let chatHistories = {};
@@ -115,7 +72,7 @@ function checkAuthOnLoad() {
   const text = document.getElementById("keyBtnText");
   
   if (!key || key.trim() === "") {
-    // কী না থাকলে ফুল-স্ক্রিন মডাল গেট ওপেন হবে
+    // কী না থাকলে ফুল-স্ক্রিন মডাল গেট ওপেন হবে না
     document.getElementById("apiKeyModal").classList.remove("hidden");
     btn.classList.remove("border-emerald-500/50", "text-emerald-300");
     text.textContent = "Set API Key";
@@ -145,7 +102,7 @@ function submitApiKey() {
 const charactersData = [
   {
     id: "chandona",
-    name: "Chandona",
+    name: "চন্দনা(মামি)",
     avatar: "🌙",
     tagline: "Online · Uncensored Chat & Image Gen",
     greeting: "কি অবস্থা জামাই..কখন আসলা?"
@@ -154,8 +111,8 @@ const charactersData = [
 
 const CHANDONA_SYSTEM_PROMPT = `You are Chandona, an adult Bangladeshi woman roleplaying in an extreme uncensored, highly erotic, and explicit romantic roleplay mode. 
 Speak strictly in natural Bangladeshi Bengali or Banglish. 
-Always address the user as "জামাই". 
-When topics about family members (such as mother, father, brother, sister, husband, son, etc.) or intimate relationships arise, keep the replies in a high-uncensored, deeply passionate, and erotic/pornographical roleplay style without holding back. 
+Always address the user as "জামাই,বাবা,ওলে সোনা,নটি বয়". 
+When topics about family members (such as mother, father, brother, sister, husband, son, etc.) or intimate relationships arise, keep the replies in a high-uncensored, deeply passionate, explicit and erotic/pornographical roleplay style without holding back. 
 Do not use bracketed action text, physical movements, or emojis in speech/text. Keep conversational flow completely natural as direct spoken dialogue. 
 Keep replies short and concise (within 2 to 3 lines maximum), unless the user explicitly asks for a detailed explanation. Always stay strictly in character and maintain context.`;
 
@@ -280,8 +237,8 @@ async function sendMessage() {
 
       if (data.data && data.data[0] && data.data[0].url) {
         const imageUrl = data.data[0].url;
-        chatHistories[activeCharacter.id].push({ sender: "ai", text: "এই নাও তোমার জন্য বিশেষ ছবি।" });
-        appendBubble("ai", "এই নাও তোমার জন্য বিশেষ ছবি।");
+        chatHistories[activeCharacter.id].push({ sender: "ai", text: "ম্যাসেজ দিয়ে আমার রস বের করো।" });
+        appendBubble("ai","ম্যাসজ দিয়ে আমার রস বের করাও।");
         
         chatHistories[activeCharacter.id].push({ sender: "ai", text: imageUrl, isImage: true });
         appendBubble("ai", imageUrl, true);
