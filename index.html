@@ -25,7 +25,7 @@
         <i class="fa-solid fa-key"></i>
       </div>
       <div>
-        <h2 class="font-bold text-base text-white">Enter API Key</h2>
+        <h2 class="font-bold text-base text-white">Enter Together AI Key</h2>
         <p class="text-[11px] text-gray-400">ওয়েবসাইটে প্রবেশ করতে আপনার Together AI Key দিন</p>
       </div>
     </div>
@@ -94,7 +94,7 @@
     </div>
 
     <div class="p-3 md:p-4 bg-[#0b0e14] border-t border-[#222b3d] flex items-center gap-2">
-      <input id="chatInput" type="text" placeholder="কথা বলুন বা 'একটি ছবি দাও' লিখুন..." onkeydown="if(event.key==='Enter')sendMessage()" class="flex-1 bg-[#121721] border border-[#222b3d] focus:border-purple-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
+      <input id="chatInput" type="text" placeholder="আমি চোদা খাওয়ার জন্য প্রস্তুত, সোনা" onkeydown="if(event.key==='Enter')sendMessage()" class="flex-1 bg-[#121721] border border-[#222b3d] focus:border-purple-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
       <button id="sendBtn" onclick="sendMessage()" class="bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-3 rounded-xl font-bold text-sm text-white shadow-lg">
         <i class="fa-solid fa-paper-plane"></i>
       </button>
@@ -106,7 +106,8 @@
 const TEXT_API_ENDPOINT = "https://api.together.xyz/v1/chat/completions";
 const IMAGE_API_ENDPOINT = "https://api.together.xyz/v1/images/generations";
 
-const TEXT_MODEL = "mistralai/Mistral-7B-Instruct-v0.2";
+// Together AI serverless model that allows general API access
+const TEXT_MODEL = "mistralai/Mixtral-8x7B-Instruct-v0.1";
 const IMAGE_MODEL = "black-forest-labs/FLUX.1-schnell"; 
 
 let activeCharacter = null;
@@ -305,7 +306,7 @@ async function sendMessage() {
 
       const res = await fetch(TEXT_API_ENDPOINT, {
         method: "POST",
-        headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
+        headers: { "Authorization": `Bearer ` + apiKey.trim(), "Content-Type": "application/json" },
         body: JSON.stringify({
           model: TEXT_MODEL,
           messages: formattedMessages,
