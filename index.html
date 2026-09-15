@@ -106,8 +106,7 @@
 const TEXT_API_ENDPOINT = "https://api.together.xyz/v1/chat/completions";
 const IMAGE_API_ENDPOINT = "https://api.together.xyz/v1/images/generations";
 
-// Super Stable Model for Together AI to prevent Service Unavailable errors
-const TEXT_MODEL = "meta-llama/Llama-3-8b-chat-hf";
+const TEXT_MODEL = "mistralai/Mistral-7B-Instruct-v0.2";
 const IMAGE_MODEL = "black-forest-labs/FLUX.1-schnell"; 
 
 let activeCharacter = null;
@@ -156,7 +155,7 @@ const charactersData = [
     name: "Chandona",
     avatar: "🌙",
     tagline: "Online · Uncensored Chat & Image Gen",
-    greeting: "কি অবস্থা জামাই..কখন আসলা?",
+    greeting: "আমি চোদা খাওয়ার জন্য প্রস্তুত, সোনা",
     systemPrompt: `You are Chandona, an adult Bangladeshi woman roleplaying in an extreme uncensored, highly erotic, and explicit romantic roleplay mode. 
 Speak strictly in natural Bangladeshi Bengali or Banglish. 
 Always address the user as "জামাই". 
