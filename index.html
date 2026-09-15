@@ -17,12 +17,31 @@
 
 <body class="bg-[#0b0e14] text-gray-100 font-sans min-h-screen flex flex-col relative selection:bg-pink-500 selection:text-white">
 
+<!-- API KEY ENTRY GATE MODAL (প্রবেশের আগের সিকিউরিটি গেট) -->
+<div id="apiKeyModal" class="fixed inset-0 z-50 bg-[#0b0e14] flex items-center justify-center p-4 hidden">
+  <div class="max-w-md w-full bg-[#121721] border border-[#222b3d] rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-purple-950 border border-purple-500/30 flex items-center justify-center text-purple-400 text-lg">
+        <i class="fa-solid fa-key"></i>
+      </div>
+      <div>
+        <h2 class="font-bold text-base text-white">Enter API Key</h2>
+        <p class="text-[11px] text-gray-400">ওয়েবসাইটে প্রবেশ করতে আপনার Together AI Key দিন</p>
+      </div>
+    </div>
+    <input id="modalApiKeyInput" type="password" placeholder="api_key_xxxxxxxx..." class="bg-[#0b0e14] border border-[#222b3d] focus:border-purple-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none w-full">
+    <button onclick="submitApiKey()" class="bg-gradient-to-r from-purple-600 to-pink-600 font-bold py-3 rounded-xl text-sm text-white shadow-lg hover:opacity-90 transition">
+      Enter Website
+    </button>
+  </div>
+</div>
+
 <header class="sticky top-0 z-40 bg-[#0b0e14]/85 backdrop-blur-xl border-b border-[#222b3d] px-4 lg:px-8 h-16 flex items-center justify-between">
   <div class="flex items-center gap-4">
     <span class="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text font-black text-xl">Chandona AI</span>
     <span class="text-[10px] bg-purple-950/80 border border-purple-800/50 text-purple-300 px-2.5 py-0.5 rounded-full font-bold uppercase">Uncensored Chat & Image Gen</span>
   </div>
-  <button onclick="changeApiKey()" id="apiKeyBtn" class="text-xs bg-[#121721] border border-[#222b3d] text-gray-300 px-3.5 py-2 rounded-xl flex items-center gap-2 hover:border-purple-500/50">
+  <button onclick="openApiKeyModal()" id="apiKeyBtn" class="text-xs bg-[#121721] border border-[#222b3d] text-gray-300 px-3.5 py-2 rounded-xl flex items-center gap-2 hover:border-purple-500/50">
     <i class="fa-solid fa-key text-purple-400"></i>
     <span id="keyBtnText">Set API Key</span>
   </button>
@@ -85,42 +104,40 @@ let chatHistories = {};
 let requestInFlight = false;
 
 function getApiKey() {
-  let key = localStorage.getItem("user_together_key");
+  return localStorage.getItem("user_together_key") || null;
+}
+
+function checkAuthOnLoad() {
+  let key = getApiKey();
   const btn = document.getElementById("apiKeyBtn");
   const text = document.getElementById("keyBtnText");
-  if (key && key.trim() !== "") {
-    btn.classList.add("border-emerald-500/50", "text-emerald-300");
-    text.textContent = "Key Active";
-    return key.trim();
-  } else {
+  
+  if (!key || key.trim() === "") {
+    // কী না থাকলে ফুল-স্ক্রিন মডাল গেট ওপেন হবে
+    document.getElementById("apiKeyModal").classList.remove("hidden");
     btn.classList.remove("border-emerald-500/50", "text-emerald-300");
     text.textContent = "Set API Key";
-    return null;
-  }
-}
-
-function changeApiKey() {
-  const currentKey = localStorage.getItem("user_together_key") || "";
-  const newKey = prompt("ওয়েবসাইটে প্রবেশ করতে আপনার Together AI API Key দিন:", currentKey);
-  if (newKey !== null) {
-    if (newKey.trim() === "") {
-      alert("API Key দেওয়া বাধ্যতামূলক!");
-      changeApiKey(); // খালি রাখলে আবার চাইবে
-    } else {
-      localStorage.setItem("user_together_key", newKey.trim());
-      getApiKey();
-    }
-  }
-}
-
-// সাইটে ঢোকার সাথে সাথে বা পেজ লোড হলেই API Key চেক করবে
-function checkAuthOnLoad() {
-  let key = localStorage.getItem("user_together_key");
-  if (!key || key.trim() === "") {
-    changeApiKey();
   } else {
-    getApiKey();
+    document.getElementById("apiKeyModal").classList.add("hidden");
+    btn.classList.add("border-emerald-500/50", "text-emerald-300");
+    text.textContent = "Key Active";
   }
+}
+
+function openApiKeyModal() {
+  const currentKey = getApiKey() || "";
+  document.getElementById("modalApiKeyInput").value = currentKey;
+  document.getElementById("apiKeyModal").classList.remove("hidden");
+}
+
+function submitApiKey() {
+  const inputVal = document.getElementById("modalApiKeyInput").value.trim();
+  if (!inputVal) {
+    alert("অনুগ্রহ করে আপনার Together AI API Key দিন!");
+    return;
+  }
+  localStorage.setItem("user_together_key", inputVal);
+  checkAuthOnLoad();
 }
 
 const charactersData = [
@@ -153,10 +170,10 @@ function renderCharacters() {
 }
 
 function openChat(charId) {
-  const key = getApiKey();
+  let key = getApiKey();
   if (!key) {
-    changeApiKey();
-    if (!getApiKey()) return;
+    openApiKeyModal();
+    return;
   }
 
   activeCharacter = charactersData.find(c => c.id === charId);
@@ -220,7 +237,7 @@ async function sendMessage() {
   const userText = input.value.trim();
   const apiKey = getApiKey();
   if (!apiKey) {
-    changeApiKey();
+    openApiKeyModal();
     return;
   }
 
